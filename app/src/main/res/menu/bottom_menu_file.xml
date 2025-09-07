@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Missões"
+        android:icon="@drawable/baseline_home"
+        android:id="@+id/missions"
+        />
+    <item android:title="Materiais"
+        android:icon="@drawable/baseline_collections_bookmark"
+        android:id="@+id/materiais"
+        />
+    <item android:title="Conta"
+        android:icon="@drawable/outline_account_circle"
+        android:id="@+id/conta"
+        />
+</menu>
