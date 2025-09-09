@@ -1,9 +1,18 @@
 package com.example.codigo_em_libras;
 
+import android.annotation.SuppressLint;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -12,10 +21,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.codigo_em_libras.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    String tituloAtual;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +36,48 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        tituloAtual = "Missões";
         replaceFragment(new MissoesFragment());
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
+
             if (id == R.id.missions) {
                 // Ação para Missões
+                tituloAtual = "Missões";
                 replaceFragment(new MissoesFragment());
             } else if (id == R.id.materiais) {
                 // Ação para Materiais
+                tituloAtual = "Materiais";
                 replaceFragment(new MateriaisFragment());
             } else if (id == R.id.conta) {
+                tituloAtual = "Conta";
                 // Ação para Conta
                 replaceFragment(new ContaFragment());
             }
+
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                View iconView = bottomNav.findViewById(bottomNav.getMenu().getItem(i).getItemId());
+                if (iconView != null) {
+                    iconView.animate().scaleX(1f).scaleY(1f).setDuration(150).start();
+                }
+            }
+
+            // Aumenta o ícone do item selecionado
+            View selectedIconView = bottomNav.findViewById(item.getItemId());
+            selectedIconView.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
+            if (selectedIconView != null) {
+                selectedIconView.animate().scaleX(1.3f).scaleY(1.3f).setDuration(150).start();
+            }
+
             return true;
+
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -55,5 +94,12 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.replace(R.id.frameLayout,fragment);
         fragmentTransaction.commit();
+
+        setCustomTitle(tituloAtual);
+    }
+
+    public void setCustomTitle(String title) {
+        TextView tituloTextView = findViewById(R.id.tituloToolBar);
+        tituloTextView.setText(title);
     }
 }
