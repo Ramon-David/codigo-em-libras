@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,17 +37,29 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+
         tituloAtual = "Missões";
         replaceFragment(new MissoesFragment());
+        View iconMissions = bottomNav.findViewById(R.id.missions);
+
+        iconMissions.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
+        iconMissions.animate().scaleX(1.25f).scaleY(1.25f).setDuration(150).start();
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
+
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                View iconView = bottomNav.findViewById(bottomNav.getMenu().getItem(i).getItemId());
+                if (iconView != null) {
+                    iconView.animate().scaleX(1f).scaleY(1f).setDuration(150).start();
+                    iconView.setBackground(null);
+                }
+            }
 
             if (id == R.id.missions) {
                 // Ação para Missões
@@ -62,18 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ContaFragment());
             }
 
-            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
-                View iconView = bottomNav.findViewById(bottomNav.getMenu().getItem(i).getItemId());
-                if (iconView != null) {
-                    iconView.animate().scaleX(1f).scaleY(1f).setDuration(150).start();
-                }
-            }
-
             // Aumenta o ícone do item selecionado
-            View selectedIconView = bottomNav.findViewById(item.getItemId());
-            selectedIconView.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
+            View selectedIconView = bottomNav.findViewById(id);
             if (selectedIconView != null) {
-                selectedIconView.animate().scaleX(1.3f).scaleY(1.3f).setDuration(150).start();
+                selectedIconView.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
+                selectedIconView.animate().scaleX(1.25f).scaleY(1.25f).setDuration(150).start();
+             //   selectedIconView.animate().y(-10f).setDuration(150).start();
             }
 
             return true;
