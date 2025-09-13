@@ -3,6 +3,7 @@
     <style name="Base.Theme.CódigoEmLibras" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/degrade_azul_marinho</item>
+        <item name="fontFamily">@font/abhaya_libre_medium</item>
     </style>
 
     <style name="Theme.CódigoEmLibras" parent="Base.Theme.CódigoEmLibras" />
