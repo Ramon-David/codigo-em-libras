@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.codigo_em_libras.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Firebase;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
