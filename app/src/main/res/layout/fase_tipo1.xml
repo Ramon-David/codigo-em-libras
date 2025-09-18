@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/nikki_frente" />
 
     <TextView
-        android:id="@+id/perguntaTextView"
+        android:id="@+id/perguntaTipo1TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/gifFase1ImageView" />
 
     <Button
-        android:id="@+id/alternativa1Button"
+        android:id="@+id/alternativa1Tipo1Button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
@@ -39,10 +39,10 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/perguntaTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/perguntaTipo1TextView" />
 
     <Button
-        android:id="@+id/alternativa2Button"
+        android:id="@+id/alternativa2Tipo1Button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
@@ -52,10 +52,10 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alternativa1Button" />
+        app:layout_constraintTop_toBottomOf="@+id/alternativa1Tipo1Button" />
 
     <Button
-        android:id="@+id/alternativa3Button"
+        android:id="@+id/alternativa3Tipo1Button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
@@ -64,10 +64,10 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alternativa2Button" />
+        app:layout_constraintTop_toBottomOf="@+id/alternativa2Tipo1Button" />
 
     <Button
-        android:id="@+id/alternativa4Button"
+        android:id="@+id/alternativa4Tipo1Button"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
@@ -76,5 +76,5 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alternativa3Button" />
+        app:layout_constraintTop_toBottomOf="@+id/alternativa3Tipo1Button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

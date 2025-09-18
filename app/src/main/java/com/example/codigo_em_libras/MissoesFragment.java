@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,11 +68,9 @@ public class MissoesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_missoes, container, false);
-
         FrameLayout rootLayout = view.findViewById(R.id.fragmentMissoes);
-        View layoutFilho = inflater.inflate(R.layout.fase_tipo4,rootLayout, false);
 
-        // Adicionando o layout filho ao pai
+        View layoutFilho = new Fases().criarFaseTipo1(inflater,rootLayout);
         rootLayout.addView(layoutFilho);
 
         return view;

@@ -1,6 +1,7 @@
 package com.example.codigo_em_libras;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -101,12 +102,5 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.replace(R.id.frameLayout,fragment);
         fragmentTransaction.commit();
-
-        setCustomTitle(tituloAtual);
-    }
-
-    public void setCustomTitle(String title) {
-        TextView tituloTextView = findViewById(R.id.tituloToolBar);
-        tituloTextView.setText(title);
     }
 }
