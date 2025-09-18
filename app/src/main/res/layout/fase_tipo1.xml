@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/faseTipo1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/gifFase1ImageView"
+        android:layout_width="357dp"
+        android:layout_height="249dp"
+        android:layout_marginTop="70dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/nikki_frente" />
+
+    <TextView
+        android:id="@+id/perguntaTipo1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/abhaya_libre_medium"
+        android:text="Qual é o significado desse gesto?"
+        android:textColor="#18223C"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gifFase1ImageView" />
+
+    <Button
+        android:id="@+id/alternativa1Tipo1Button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#0a1931"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perguntaTipo1TextView" />
+
+    <Button
+        android:id="@+id/alternativa2Tipo1Button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#0a1931"
+        android:backgroundTintMode="add"
+        android:fontFamily="@font/abhaya_libre_medium"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alternativa1Tipo1Button" />
+
+    <Button
+        android:id="@+id/alternativa3Tipo1Button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#0a1931"
+        android:backgroundTintMode="add"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alternativa2Tipo1Button" />
+
+    <Button
+        android:id="@+id/alternativa4Tipo1Button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#0a1931"
+        android:backgroundTintMode="add"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alternativa3Tipo1Button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@
 
             <Toolbar
                 android:id="@+id/toolbar"
-                android:fontFamily="@font/abhaya_libre"
+                android:fontFamily="@font/abhaya_libre_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"

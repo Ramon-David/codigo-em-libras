@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CódigoEmLibras">
 
         <activity
+            android:name=".FaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
