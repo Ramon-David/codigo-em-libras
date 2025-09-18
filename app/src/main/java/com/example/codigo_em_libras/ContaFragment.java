@@ -1,5 +1,7 @@
 package com.example.codigo_em_libras;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +32,10 @@ public class ContaFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // Firebase + Google Sign-In
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
 
     public ContaFragment() {
         // Required empty public constructor
@@ -54,13 +67,46 @@ public class ContaFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        // Inicializa Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
+        // Configura Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_conta, container, false);
+        // Infla o layout
+        View view = inflater.inflate(R.layout.fragment_conta, container, false);
+
+        // Pega o botão de logout
+        ImageView logoutButton = view.findViewById(R.id.logoutButton);
+
+        logoutButton.setOnClickListener(v -> {
+
+            // Limpa SharedPreferences locais
+            SharedPreferences prefs = requireActivity().getSharedPreferences("app-config", getActivity().MODE_PRIVATE);
+            prefs.edit().clear().apply();
+
+            // Firebase Sign-out
+            mAuth.signOut();
+
+            // Google Sign-out
+            mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+                // Vai para a tela de login
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                Toast.makeText(getContext(), "Logout bem sucedido!", Toast.LENGTH_SHORT).show();
+                requireActivity().finish();
+            });
+        });
+
+        // Mudei a lógica que infla o layout pra usar uma view, mas na prática faz o mesmo.
+        return view;
     }
 }

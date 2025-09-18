@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.codigo_em_libras"
-        minSdk = 31
+        minSdk = 29 // tava em 31
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -46,5 +46,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Firebase Firestore
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
+
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation ("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 }
