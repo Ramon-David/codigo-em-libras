@@ -4,14 +4,44 @@
     android:id="@+id/fragmentMissoes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B6EAFF"
     tools:context=".MissoesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- ViewPager2 ocupando toda a tela -->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerImageSlider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B6EAFF"
-        android:text="Missões parte"
-        android:textColor="#0E383E" />
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp" />
+
+    <!-- Botão anterior -->
+    <ImageButton
+        android:id="@+id/previousButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical|start"
+        android:background="@android:color/transparent"
+        android:contentDescription="Anterior"
+        android:src="@android:drawable/ic_media_previous" />
+
+    <!-- Botão próximo -->
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical|end"
+        android:background="@android:color/transparent"
+        android:contentDescription="Próximo"
+        android:src="@android:drawable/ic_media_next" />
+
+    <Button
+        android:id="@+id/buttonIniciar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:text="Button" />
 
 </FrameLayout>

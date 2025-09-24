@@ -1,17 +1,27 @@
 package com.example.codigo_em_libras;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +38,7 @@ public class MissoesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ViewPager2 viewPager2;
 
     public MissoesFragment() {
         // Required empty public constructor
@@ -58,9 +69,6 @@ public class MissoesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
     }
 
     @Override
@@ -70,11 +78,54 @@ public class MissoesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_missoes, container, false);
         FrameLayout rootLayout = view.findViewById(R.id.fragmentMissoes);
 
-        View layoutFilho = new Fases().criarFaseTipo1(inflater,rootLayout);
+        /*
+        View layoutFilho = new Fases().criarFaseTipo1(inflater, rootLayout);
         rootLayout.addView(layoutFilho);
+        */
+
+        Button buttonIniciar = view.findViewById(R.id.buttonIniciar);
+        buttonIniciar.setOnClickListener(v -> {
+            // getActivity() retorna o contexto da Activity que hospeda o Fragment
+            Intent intent = new Intent(getActivity(), FaseActivity.class);
+            intent.putExtra("conteudo", "alfabeto");
+            startActivity(intent);
+        });
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        ViewPager2 viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
+
+        List<SliderItem> sliderItems = new ArrayList<>();
+        sliderItems.add(new SliderItem(R.drawable.mundo1));
+        sliderItems.add(new SliderItem(R.drawable.mundo2));
+        sliderItems.add(new SliderItem(R.drawable.mundo3));
+
+        viewPager2.setAdapter(new SliderAdapter(sliderItems, viewPager2));
+
+        // Remove o efeito de overscroll (aquele brilho feio nas bordas quando tentamos ir além da primeira ou última imagens)
+        RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
+        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        ImageButton previousButton = view.findViewById(R.id.previousButton);
+        ImageButton nextButton = view.findViewById(R.id.nextButton);
+
+        previousButton.setOnClickListener(v -> {
+            int currentItem = viewPager2.getCurrentItem();
+            if (currentItem > 0) {
+                viewPager2.setCurrentItem(currentItem - 1, true);
+            }
+        });
+
+        nextButton.setOnClickListener(v -> {
+            int currentItem = viewPager2.getCurrentItem();
+            if (currentItem < sliderItems.size() - 1) {
+                viewPager2.setCurrentItem(currentItem + 1, true);
+            }
+        });
+    }
 }

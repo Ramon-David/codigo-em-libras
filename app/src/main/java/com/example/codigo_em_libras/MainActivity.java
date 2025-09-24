@@ -1,20 +1,11 @@
 package com.example.codigo_em_libras;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,7 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.codigo_em_libras.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.Firebase;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -35,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        /*
+        COMANDO DE CRIAÇÃO DO ESQUELETO DO BANCO DE DADOS NO FIREBASE
+
+        FirestoreSetup setup = new FirestoreSetup();
+        setup.criarEstruturaCompletaMundo1();
+        */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
