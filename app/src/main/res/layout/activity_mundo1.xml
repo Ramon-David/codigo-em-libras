@@ -127,11 +127,27 @@
                         app:layout_constraintEnd_toEndOf="@id/mapaContainer"
                         app:layout_constraintTop_toBottomOf="@+id/fase6ImageButton"
                         app:srcCompat="@drawable/ficha_mundos" />
+
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
         </ScrollView>
     </HorizontalScrollView>
+
+
+    <ImageButton
+        android:id="@+id/voltarImageButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="Botão de Voltar"
+        android:scaleType="centerCrop"
+        android:tint="#5D0A0A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/voltar_icon" />
 
     <!--<ImageView
         android:layout_width="match_parent"

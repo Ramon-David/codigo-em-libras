@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,14 @@ public class Mundo1Activity extends AppCompatActivity {
         ImageButton fase7ImageButton = findViewById(R.id.fase7ImageButton);
         botoesFases.add(fase7ImageButton);
 
+        ImageButton voltarButton = findViewById(R.id.voltarImageButton);
+        voltarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         bancoDeDados = FirebaseFirestore.getInstance();
         FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
         String userId = usuarioAtual.getUid();
@@ -108,19 +117,17 @@ public class Mundo1Activity extends AppCompatActivity {
                                                     " | Fase: " + faseAtual +
                                                     " | Mundo: " + mundoAtual);
 
-                                            if  (mundoAtual >= 1 && faseAtual >= (finalI + 1)){
+                                            if (mundoAtual >= 1 && faseAtual >= (finalI + 1)) {
                                                 Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
-                                                intent.putExtra("conteudo", "alfabeto");
+                                                intent.putExtra("fase", finalI + 1); // só passa o número da fase
                                                 startActivity(intent);
-                                            }else{
+                                            } else {
                                                 Toast.makeText(
                                                         getApplicationContext(),
-                                                        "Você ainda não pode acessar essa fase! Complete a fase "+finalI+" antes de acessá-la!",
+                                                        "Você ainda não pode acessar essa fase! Complete a fase " + finalI + " antes de acessá-la!",
                                                         Toast.LENGTH_SHORT
                                                 ).show();
                                             }
-
-
                                         } else {
                                             Log.d("FIREBASE", "Documento não encontrado!");
                                         }
@@ -131,17 +138,12 @@ public class Mundo1Activity extends AppCompatActivity {
 
                     dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialogPersonalizado.show();
-
-
                 }
             });
         }
-
-
     }
 
     public static int dpToPx(Context context, float dp) {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
-
 }

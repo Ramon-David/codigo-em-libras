@@ -8,7 +8,6 @@
     tools:context=".MissoesFragment">
 
     <!-- ViewPager2 ocupando toda a tela -->
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerImageSlider"
         android:layout_width="match_parent"
@@ -35,13 +34,4 @@
         android:background="@android:color/transparent"
         android:contentDescription="Próximo"
         android:src="@android:drawable/ic_media_next" />
-
-    <Button
-        android:id="@+id/buttonIniciar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="40dp"
-        android:text="Button" />
-
 </FrameLayout>

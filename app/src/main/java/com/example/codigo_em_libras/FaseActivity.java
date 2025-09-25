@@ -27,8 +27,21 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
     private FrameLayout rootLayout;
     private Fases fases;
     private FirebaseFirestore bancoDeDados;
-    private static final int MAX_QUESTOES = 4; // Isso limita a quatro questões for fase, que atualmente corresponde às quatro primeiras.
 
+    private String conteudoAtual;
+    private int faseAtual;
+    private static final int MAX_QUESTOES = 4;
+
+    // Lista de conteúdos (na ordem das fases)
+    private final String[] listaConteudos = {
+            "alfabeto",
+            "numeros",
+            "saudacoes",
+            "cores",
+            "animais",
+            "profissoes",
+            "frases"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +52,19 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
         fases = new Fases(this);
         bancoDeDados = FirebaseFirestore.getInstance();
 
-        String conteudoAtual = "alfabeto"; // <- pode trocar dinamicamente depois
+        // Pega a fase enviada pela Mundo1Activity (padrão = 1)
+        faseAtual = getIntent().getIntExtra("fase", 1);
+
+        // Define o conteúdo correto de acordo com a fase
+        if (faseAtual >= 1 && faseAtual <= listaConteudos.length) {
+            conteudoAtual = listaConteudos[faseAtual - 1];
+        } else {
+            conteudoAtual = listaConteudos[0]; // fallback se algo vier errado
+        }
+
+        // Sempre começa do zero quando reabre
+        indexAtual = 0;
+
         carregarQuestoes(conteudoAtual);
     }
 
@@ -104,10 +129,12 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
     }
 
     private void mostrarQuestao() {
-        if(indexAtual >= questoesList.size() || indexAtual >= MAX_QUESTOES) {
+        if (indexAtual >= questoesList.size() || indexAtual >= MAX_QUESTOES) {
             Toast.makeText(this, "Conteúdo concluído!", Toast.LENGTH_SHORT).show();
             finish();
 
+            // 🔹 Atualiza o progresso do jogador no Firestore
+            int proximaFase = faseAtual + 1;
             FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
 
             if (usuarioAtual != null) {
@@ -117,13 +144,14 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
                         .document(userId)
                         .collection("Dados do Jogo")
                         .document("Progresso")
-                        .update("FaseAtual", 2)
-                        .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Progresso atualizado com sucesso!"))
-                        .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao atualizar progresso", e));
+                        .get()
+                        .addOnSuccessListener(doc -> {
+                            long faseSalva = doc.contains("FaseAtual") ? doc.getLong("FaseAtual") : 1;
+                            if (proximaFase > faseSalva) {
+                                doc.getReference().update("FaseAtual", proximaFase);
+                            }
+                        });
             }
-
-
-
             return;
         }
 
