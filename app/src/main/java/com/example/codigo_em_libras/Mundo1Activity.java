@@ -84,60 +84,61 @@ public class Mundo1Activity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Dialog dialogPersonalizado = new Dialog(Mundo1Activity.this);
-                    dialogPersonalizado.setContentView(R.layout.fase_iniciar);
-                    dialogPersonalizado.getWindow().setLayout(dpToPx(Mundo1Activity.this,300),dpToPx(Mundo1Activity.this,400));
+                    if (finalI < 4) {
+                        Dialog dialogPersonalizado = new Dialog(Mundo1Activity.this);
+                        dialogPersonalizado.setContentView(R.layout.fase_iniciar);
+                        dialogPersonalizado.getWindow().setLayout(dpToPx(Mundo1Activity.this, 300), dpToPx(Mundo1Activity.this, 400));
 
-                    TextView faseAtualTextView = dialogPersonalizado.findViewById(R.id.faseAtualTextView);
-                    faseAtualTextView.setText("Fase "+(finalI+1));
-                    Log.d("FIREBASE", "Estrelas: " + 3 +
-                            " | Fase: " + 3 +
-                            " | Mundo: " + 3);
+                        TextView faseAtualTextView = dialogPersonalizado.findViewById(R.id.faseAtualTextView);
+                        faseAtualTextView.setText("Fase " + (finalI + 1));
 
-                    Button iniciarFaseButton = dialogPersonalizado.findViewById(R.id.iniciarFaseButton);
-                    iniciarFaseButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.d("FIREBASE", "Estrelas: " + 3 +
-                                    " | Fase: " + 2 +
-                                    " | Mundo: " + 3);
-                            // getActivity() retorna o contexto da Activity que hospeda o Fragment
-                            bancoDeDados.collection("JogadorDados")
-                                    .document(userId)
-                                    .collection("Dados do Jogo")
-                                    .document("Progresso")
-                                    .get()
-                                    .addOnSuccessListener(documentSnapshot -> {
-                                        if (documentSnapshot.exists()) {
-                                            Long estrelasTotais = documentSnapshot.getLong("EstrelasTotais");
-                                            Long faseAtual = documentSnapshot.getLong("FaseAtual");
-                                            Long mundoAtual = documentSnapshot.getLong("MundoAtual");
+                        Button iniciarFaseButton = dialogPersonalizado.findViewById(R.id.iniciarFaseButton);
+                        iniciarFaseButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.d("FIREBASE", "Estrelas: " + 3 +
+                                        " | Fase: " + 2 +
+                                        " | Mundo: " + 3);
+                                // getActivity() retorna o contexto da Activity que hospeda o Fragment
+                                bancoDeDados.collection("JogadorDados")
+                                        .document(userId)
+                                        .collection("Dados do Jogo")
+                                        .document("Progresso")
+                                        .get()
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            if (documentSnapshot.exists()) {
+                                                Long estrelasTotais = documentSnapshot.getLong("EstrelasTotais");
+                                                Long faseAtual = documentSnapshot.getLong("FaseAtual");
+                                                Long mundoAtual = documentSnapshot.getLong("MundoAtual");
 
-                                            Log.d("FIREBASE", "Estrelas: " + estrelasTotais +
-                                                    " | Fase: " + faseAtual +
-                                                    " | Mundo: " + mundoAtual);
+                                                Log.d("FIREBASE", "Estrelas: " + estrelasTotais +
+                                                        " | Fase: " + faseAtual +
+                                                        " | Mundo: " + mundoAtual);
 
-                                            if (mundoAtual >= 1 && faseAtual >= (finalI + 1)) {
-                                                Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
-                                                intent.putExtra("fase", finalI + 1); // só passa o número da fase
-                                                startActivity(intent);
+                                                if (mundoAtual >= 1 && faseAtual >= (finalI + 1)) {
+                                                    Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
+                                                    intent.putExtra("fase", finalI + 1); // só passa o número da fase
+                                                    startActivity(intent);
+                                                } else {
+                                                    Toast.makeText(
+                                                            getApplicationContext(),
+                                                            "Você ainda não pode acessar essa fase! Complete a fase " + finalI + " antes de acessá-la!",
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+                                                }
                                             } else {
-                                                Toast.makeText(
-                                                        getApplicationContext(),
-                                                        "Você ainda não pode acessar essa fase! Complete a fase " + finalI + " antes de acessá-la!",
-                                                        Toast.LENGTH_SHORT
-                                                ).show();
+                                                Log.d("FIREBASE", "Documento não encontrado!");
                                             }
-                                        } else {
-                                            Log.d("FIREBASE", "Documento não encontrado!");
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar dados", e));
-                        }
-                    });
+                                        })
+                                        .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar dados", e));
+                            }
+                        });
 
-                    dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialogPersonalizado.show();
+                        dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialogPersonalizado.show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Em breve...",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

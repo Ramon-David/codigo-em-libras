@@ -133,7 +133,7 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
             Toast.makeText(this, "Conteúdo concluído!", Toast.LENGTH_SHORT).show();
             finish();
 
-            // 🔹 Atualiza o progresso do jogador no Firestore
+            // Atualiza o progresso do jogador no Firestore
             int proximaFase = faseAtual + 1;
             FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
 
