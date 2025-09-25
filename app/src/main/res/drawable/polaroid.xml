@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra suave ao redor -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#16000000"/> <!-- sombra bem leve (20% opacidade) -->
+        </shape>
+    </item>
+
+    <!-- Moldura branca por cima -->
+    <item android:top="0dp" android:left="1dp" android:right="0dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#F4F3F1"/> <!-- cor da moldura -->
+        </shape>
+    </item>
+
+</layer-list>

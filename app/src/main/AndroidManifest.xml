@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CódigoEmLibras">
-
+        <activity
+            android:name=".Mundo1Activity"
+            android:exported="false" />
         <activity
             android:name=".FaseActivity"
             android:exported="false" />

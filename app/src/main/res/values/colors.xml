@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="degrade_azul_marinho">#b3cfe5</color>
+    <color name="azul_clarinho">#b3cfe5</color>
+    <color name="azul_escuro">#09162C</color>
+    <color name="azul_seila">#4C699B</color>
 </resources>

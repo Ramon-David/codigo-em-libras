@@ -28,11 +28,16 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore bd;
     private static final int RC_SIGN_IN = 100;
 
     @Override
@@ -49,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        bd = FirebaseFirestore.getInstance();
 
         // Inicializa o firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -100,12 +107,16 @@ public class LoginActivity extends AppCompatActivity {
                         // Salvo no sharedpreferences
                         String nome = user.getDisplayName();
                         String email = user.getEmail();
+                        String userId = user.getUid();
 
                         SharedPreferences sharedPreferences = getSharedPreferences("app-config", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("nome", nome);
                         editor.putString("email", email);
                         editor.apply();
+
+                        criarDocumentoInicial(userId);
+
                         startActivity(new Intent(this, MainActivity.class));
                         Toast.makeText(getApplicationContext(), "Login bem sucedido!", Toast.LENGTH_SHORT).show();
                         finish();
@@ -114,4 +125,21 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void criarDocumentoInicial(String userId) {
+        Map<String, Object> dadosIniciais = new HashMap<>();
+        dadosIniciais.put("EstrelasTotais", 0);
+        dadosIniciais.put("FaseAtual", 1);
+        dadosIniciais.put("MundoAtual", 1);
+
+        bd.collection("JogadorDados")
+                .document(userId)
+                .collection("Dados do Jogo")
+                .document("Progresso")
+                .set(dadosIniciais)
+                .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Dados iniciais criados com sucesso!"))
+                .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao criar documento", e));
+    }
 }
+
+

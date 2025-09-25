@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -105,6 +107,23 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
         if(indexAtual >= questoesList.size() || indexAtual >= MAX_QUESTOES) {
             Toast.makeText(this, "Conteúdo concluído!", Toast.LENGTH_SHORT).show();
             finish();
+
+            FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (usuarioAtual != null) {
+                String userId = usuarioAtual.getUid();
+
+                bancoDeDados.collection("JogadorDados")
+                        .document(userId)
+                        .collection("Dados do Jogo")
+                        .document("Progresso")
+                        .update("FaseAtual", 2)
+                        .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Progresso atualizado com sucesso!"))
+                        .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao atualizar progresso", e));
+            }
+
+
+
             return;
         }
 

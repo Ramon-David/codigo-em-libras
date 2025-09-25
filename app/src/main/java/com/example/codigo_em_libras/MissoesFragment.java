@@ -78,17 +78,16 @@ public class MissoesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_missoes, container, false);
         FrameLayout rootLayout = view.findViewById(R.id.fragmentMissoes);
 
-        /*
-        View layoutFilho = new Fases().criarFaseTipo1(inflater, rootLayout);
+        View layoutFilho = inflater.inflate(R.layout.mundo_tipo1, rootLayout, false);
         rootLayout.addView(layoutFilho);
-        */
 
-        Button buttonIniciar = view.findViewById(R.id.buttonIniciar);
-        buttonIniciar.setOnClickListener(v -> {
-            // getActivity() retorna o contexto da Activity que hospeda o Fragment
-            Intent intent = new Intent(getActivity(), FaseActivity.class);
-            intent.putExtra("conteudo", "alfabeto");
-            startActivity(intent);
+        ImageButton buttonMundo1 = layoutFilho.findViewById(R.id.iniciarMundo1ImageButton);
+        buttonMundo1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), Mundo1Activity.class);
+                startActivity(intent);
+            }
         });
 
         return view;
@@ -100,7 +99,7 @@ public class MissoesFragment extends Fragment {
 
         ViewPager2 viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
 
-        List<SliderItem> sliderItems = new ArrayList<>();
+        /*List<SliderItem> sliderItems = new ArrayList<>();
         sliderItems.add(new SliderItem(R.drawable.mundo1));
         sliderItems.add(new SliderItem(R.drawable.mundo2));
         sliderItems.add(new SliderItem(R.drawable.mundo3));
@@ -126,6 +125,6 @@ public class MissoesFragment extends Fragment {
             if (currentItem < sliderItems.size() - 1) {
                 viewPager2.setCurrentItem(currentItem + 1, true);
             }
-        });
+        });*/
     }
 }

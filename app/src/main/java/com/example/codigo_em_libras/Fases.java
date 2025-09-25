@@ -12,11 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
 public class Fases {
-
+    int erros;
+    int acertos;
+    FirebaseFirestore bd;
     // Interface de callback para informar a Activity que a questão terminou
     public interface QuestaoCallback {
         void proximaQuestao();
@@ -140,10 +146,48 @@ public class Fases {
 
         if (acertou) {
             Toast.makeText(context, "✅ Acertou!", Toast.LENGTH_SHORT).show();
+            acertos++;
         } else {
             Toast.makeText(context, "❌ Errou!", Toast.LENGTH_SHORT).show();
+            erros++;
         }
 
         if (callback != null) callback.proximaQuestao();
     }
+
+    private void estrelas(int faseAtualValor, Context context) {
+        FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
+        int total = acertos + erros;
+
+        if (usuarioAtual != null) {
+            String userId = usuarioAtual.getUid();
+
+            // Referência ao documento do progresso
+            DocumentReference progressoRef = bd.collection("JogadorDados")
+                    .document(userId)
+                    .collection("Dados do Jogo")
+                    .document("Progresso");
+
+            progressoRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Long faseAtual = documentSnapshot.getLong("FaseAtual");
+                    Long estrelas = documentSnapshot.getLong("EstrelasTotais");
+
+                    if (faseAtualValor > faseAtual) {
+                        // Calcula estrelas (convertendo para long)
+                        long estrelasCalculadas = estrelas + (long) Math.floor(acertos * 3.0 / total);
+                        Toast.makeText(
+                                context,"Estrelas Totais: " + estrelasCalculadas, Toast.LENGTH_SHORT
+                        ).show();
+
+                        // Atualiza o Firestore
+                        progressoRef.update("EstrelasTotais", estrelasCalculadas)
+                                .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Progresso atualizado com sucesso!"))
+                                .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao atualizar progresso", e));
+                    }
+                }
+            }).addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar progresso", e));
+        }
+    }
+
 }

@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation(libs.appcompat)
@@ -50,6 +52,7 @@ dependencies {
 
     // Firebase Firestore
     implementation("com.google.firebase:firebase-firestore:24.9.1")
+    implementation ("com.google.firebase:firebase-database:20.2.0")
 
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation ("com.google.firebase:firebase-auth:22.3.0")

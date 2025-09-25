@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Mundo1Activity">
+
+
+
+
+    <HorizontalScrollView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <FrameLayout
+                android:layout_width="710dp"
+                android:layout_height="946dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mapaContainer"
+                    android:layout_width="710dp"
+                    android:layout_height="946dp"
+                    android:background="@drawable/mapa_mundo1">
+
+
+                    <ImageButton
+                        android:id="@+id/fase1ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="120dp"
+                        android:layout_marginEnd="152dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase2ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="288dp"
+                        android:layout_marginEnd="160dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase3ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="216dp"
+                        android:layout_marginEnd="344dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase4ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="348dp"
+                        android:layout_marginEnd="356dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase5ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="480dp"
+                        android:layout_marginEnd="392dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase6ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="596dp"
+                        android:layout_marginEnd="448dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase7ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="76dp"
+                        android:layout_marginEnd="460dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toBottomOf="@+id/fase6ImageButton"
+                        app:srcCompat="@drawable/ficha_mundos" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+        </ScrollView>
+    </HorizontalScrollView>
+
+    <!--<ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/molde_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
