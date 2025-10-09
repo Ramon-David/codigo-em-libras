@@ -81,30 +81,40 @@ public class MissoesFragment extends Fragment {
         View layoutFilho = inflater.inflate(R.layout.mundo_tipo1, rootLayout, false);
         rootLayout.addView(layoutFilho);
 
-        ImageButton buttonMundo1 = layoutFilho.findViewById(R.id.iniciarMundo1ImageButton);
+        /*ImageButton buttonMundo1 = layoutFilho.findViewById(R.id.iniciarMundo1ImageButton);
         buttonMundo1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Mundo1Activity.class);
                 startActivity(intent);
             }
+        });*/
+
+        ViewPager2 viewPager2 = layoutFilho.findViewById(R.id.viewPagerImageSlider);
+
+        List<SliderItem> sliderItems = new ArrayList<>();
+        sliderItems.add(new SliderItem(R.drawable.mundo1_layout));
+        sliderItems.add(new SliderItem(R.drawable.mundo2_layout));
+        sliderItems.add(new SliderItem(R.drawable.mundo3_layout));
+
+        SliderAdapter adapter = new SliderAdapter(sliderItems, viewPager2);
+        viewPager2.setAdapter(adapter);
+        adapter.setOnItemClickListener(position -> {
+            switch (position) {
+                case 0:
+                    // Mundo 1
+                    startActivity(new Intent(getContext(), Mundo1Activity.class));
+                    break;
+                case 1:
+                    // Mundo 2
+                    startActivity(new Intent(getContext(), Mundo2Activity.class));
+                    break;
+                case 2:
+                    // Mundo 3
+                    startActivity(new Intent(getContext(), Mundo3Activity.class));
+                    break;
+            }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ViewPager2 viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
-
-        /*List<SliderItem> sliderItems = new ArrayList<>();
-        sliderItems.add(new SliderItem(R.drawable.mundo1));
-        sliderItems.add(new SliderItem(R.drawable.mundo2));
-        sliderItems.add(new SliderItem(R.drawable.mundo3));
-
-        viewPager2.setAdapter(new SliderAdapter(sliderItems, viewPager2));
 
         // Remove o efeito de overscroll (aquele brilho feio nas bordas quando tentamos ir além da primeira ou última imagens)
         RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
@@ -125,6 +135,13 @@ public class MissoesFragment extends Fragment {
             if (currentItem < sliderItems.size() - 1) {
                 viewPager2.setCurrentItem(currentItem + 1, true);
             }
-        });*/
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 }

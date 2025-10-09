@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("email", email);
                         editor.apply();
 
-                        criarDocumentoInicial(userId);
+                        criarDocumentoInicial(userId,nome,email);
 
                         startActivity(new Intent(this, MainActivity.class));
                         Toast.makeText(getApplicationContext(), "Login bem sucedido!", Toast.LENGTH_SHORT).show();
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void criarDocumentoInicial(String userId) {
+    private void criarDocumentoInicial(String userId,String nome, String email) {
         Map<String, Object> dadosIniciais = new HashMap<>();
         dadosIniciais.put("EstrelasTotais", 0);
         dadosIniciais.put("FaseAtual", 1);
@@ -138,6 +138,20 @@ public class LoginActivity extends AppCompatActivity {
                 .document("Progresso")
                 .set(dadosIniciais)
                 .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Dados iniciais criados com sucesso!"))
+                .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao criar documento", e));
+
+
+        Map<String, Object> dadosUsuario = new HashMap<>();
+        dadosUsuario.put("Nome", nome);
+        dadosUsuario.put("Email", email);
+        dadosUsuario.put("ModoNoturno", false);
+
+        bd.collection("JogadorDados")
+                .document(userId)
+                .collection("Dados da Conta")
+                .document("DadosDaConta")
+                .set(dadosIniciais)
+                .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Dados da conta criados com sucesso!"))
                 .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao criar documento", e));
     }
 }

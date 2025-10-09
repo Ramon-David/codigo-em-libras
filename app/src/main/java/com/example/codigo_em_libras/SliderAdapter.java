@@ -15,10 +15,19 @@ import java.util.List;
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHoler> {
     private List<SliderItem> sliderItems;
     private ViewPager2 viewPager2;
+    private OnItemClickListener onItemClickListener;
 
     SliderAdapter(List<SliderItem> sliderItems, ViewPager2 viewPager2) {
         this.sliderItems = sliderItems;
         this.viewPager2 = viewPager2;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -49,6 +58,16 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         SliderViewHoler(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageSlide);
+            imageView.setClickable(true);
+
+            itemView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        onItemClickListener.onItemClick(position);
+                    }
+                }
+            });
         }
 
         void setImage(SliderItem sliderItem) {

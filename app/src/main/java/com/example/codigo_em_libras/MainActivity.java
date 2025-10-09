@@ -27,6 +27,8 @@ import com.example.codigo_em_libras.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Firebase;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     String tituloAtual;
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        bottomNav.setItemIconTintList(cores);
+        bottomNav.setItemTextColor(cores);
+
 
         tituloAtual = "Missões";
         replaceFragment(new MissoesFragment());
@@ -62,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        TextView tituloToolBar = findViewById(R.id.tituloToolBar);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -87,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 // Ação para Conta
                 replaceFragment(new ContaFragment());
             }
+
+            tituloToolBar.setText(tituloAtual);
 
             // Aumenta o ícone do item selecionado
             View selectedIconView = bottomNav.findViewById(id);

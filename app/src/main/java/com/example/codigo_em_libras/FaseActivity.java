@@ -147,8 +147,15 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
                         .get()
                         .addOnSuccessListener(doc -> {
                             long faseSalva = doc.contains("FaseAtual") ? doc.getLong("FaseAtual") : 1;
+                            long estrelasAtuaisLong = doc.getLong("EstrelasTotais");
+                            int estrelasAtuais = (int) estrelasAtuaisLong;
+
                             if (proximaFase > faseSalva) {
+                                int numeroEstrelas = fases.contarEstrelas(estrelasAtuais);
                                 doc.getReference().update("FaseAtual", proximaFase);
+                                doc.getReference().update("EstrelasTotais", (numeroEstrelas+estrelasAtuais));
+
+                                Toast.makeText(this, "Você ganhou "+numeroEstrelas+" estrelas. Agora você possui "+(numeroEstrelas+estrelasAtuais)+" no total!", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

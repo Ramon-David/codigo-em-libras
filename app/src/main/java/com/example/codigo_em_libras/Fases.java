@@ -155,10 +155,12 @@ public class Fases {
         if (callback != null) callback.proximaQuestao();
     }
 
-    private void estrelas(int faseAtualValor, Context context) {
-        FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
+    public int contarEstrelas(int estrelas) {
         int total = acertos + erros;
+        int estrelasCalculadas = (int) Math.floor(acertos * 3.0 / total);
 
+        return estrelasCalculadas;
+/*
         if (usuarioAtual != null) {
             String userId = usuarioAtual.getUid();
 
@@ -175,7 +177,7 @@ public class Fases {
 
                     if (faseAtualValor > faseAtual) {
                         // Calcula estrelas (convertendo para long)
-                        long estrelasCalculadas = estrelas + (long) Math.floor(acertos * 3.0 / total);
+
                         Toast.makeText(
                                 context,"Estrelas Totais: " + estrelasCalculadas, Toast.LENGTH_SHORT
                         ).show();
@@ -187,7 +189,7 @@ public class Fases {
                     }
                 }
             }).addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar progresso", e));
-        }
+        }*/
     }
 
 }
