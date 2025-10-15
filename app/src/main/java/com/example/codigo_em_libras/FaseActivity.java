@@ -1,5 +1,6 @@
 package com.example.codigo_em_libras;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -131,7 +134,6 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
     private void mostrarQuestao() {
         if (indexAtual >= questoesList.size() || indexAtual >= MAX_QUESTOES) {
             Toast.makeText(this, "Conteúdo concluído!", Toast.LENGTH_SHORT).show();
-            finish();
 
             // Atualiza o progresso do jogador no Firestore
             int proximaFase = faseAtual + 1;
@@ -139,26 +141,41 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
 
             if (usuarioAtual != null) {
                 String userId = usuarioAtual.getUid();
-
-                bancoDeDados.collection("JogadorDados")
+                DocumentReference progresso = bancoDeDados.collection("JogadorDados")
                         .document(userId)
                         .collection("Dados do Jogo")
-                        .document("Progresso")
+                        .document("Progresso");
+
+
+                        progresso.get().addOnSuccessListener(doc -> {
+                            long faseRegistrada = doc.getLong("FaseAtual");
+                            long mundoAtual = doc.getLong("MundoAtual");
+
+                            if (faseRegistrada < proximaFase){
+                                if (proximaFase > 7) {
+                                    doc.getReference().update("FaseAtual", 1);
+                                    doc.getReference().update("MundoAtual", mundoAtual+1);
+                                }else{
+                                    doc.getReference().update("FaseAtual", proximaFase);
+                                }
+                            }
+                        });
+
+                        progresso.collection("mundo1")
+                        .document("fase"+faseAtual)
                         .get()
                         .addOnSuccessListener(doc -> {
-                            long faseSalva = doc.contains("FaseAtual") ? doc.getLong("FaseAtual") : 1;
-                            long estrelasAtuaisLong = doc.getLong("EstrelasTotais");
-                            int estrelasAtuais = (int) estrelasAtuaisLong;
+                            long estrelaPorFase = doc.getLong("estrelas");
+                            int numeroEstrelasAtual = fases.contarEstrelas();
 
-                            if (proximaFase > faseSalva) {
-                                int numeroEstrelas = fases.contarEstrelas(estrelasAtuais);
-                                doc.getReference().update("FaseAtual", proximaFase);
-                                doc.getReference().update("EstrelasTotais", (numeroEstrelas+estrelasAtuais));
+                            Toast.makeText(getApplicationContext(),"Você recebeu "+numeroEstrelasAtual+" estrelas!",Toast.LENGTH_SHORT).show();
 
-                                Toast.makeText(this, "Você ganhou "+numeroEstrelas+" estrelas. Agora você possui "+(numeroEstrelas+estrelasAtuais)+" no total!", Toast.LENGTH_SHORT).show();
+                            if (numeroEstrelasAtual > estrelaPorFase) {
+                                doc.getReference().update("estrelas", numeroEstrelasAtual);
                             }
                         });
             }
+            finish();
             return;
         }
 

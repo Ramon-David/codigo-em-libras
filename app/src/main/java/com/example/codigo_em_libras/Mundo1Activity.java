@@ -5,6 +5,7 @@ import static android.app.PendingIntent.getActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
@@ -13,15 +14,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +37,7 @@ import java.util.Map;
 
 public class Mundo1Activity extends AppCompatActivity {
     private FirebaseFirestore bancoDeDados;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,17 @@ public class Mundo1Activity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        String[] listaConteudos = {
+                "alfabeto",
+                "numeros",
+                "saudacoes",
+                "cores",
+                "animais",
+                "profissoes",
+                "frases"
+        };
+
 
         ArrayList<ImageButton> botoesFases = new ArrayList<>();
         ImageButton fase1ImageButton = findViewById(R.id.fase1ImageButton);
@@ -78,19 +94,70 @@ public class Mundo1Activity extends AppCompatActivity {
         FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
         String userId = usuarioAtual.getUid();
 
+        ImageView spyImageView = findViewById(R.id.spyImageView);
+
+        int marginInDp = 35;
+        float density = getResources().getDisplayMetrics().density;
+        int marginInPx = (int) (marginInDp * density);
+
         for (int i = 0; i < botoesFases.size(); i++) {
             int finalI = i;
             botoesFases.get(i).setOnClickListener(new View.OnClickListener() {
+                ImageButton faseAtual = botoesFases.get(finalI);
                 @Override
                 public void onClick(View v) {
+                    spyImageView.animate()
+                            .scaleX(0f)
+                            .setDuration(500)
+                            .withEndAction(() -> {
+                                // Depois que a animação termina, atualiza a constraint
+                                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) spyImageView.getLayoutParams();
+                                params.bottomMargin = marginInPx;
+                                params.bottomToBottom = faseAtual.getId();
+                                params.startToStart = faseAtual.getId();
+                                params.endToEnd = faseAtual.getId();
+                                spyImageView.setLayoutParams(params);
 
-                    if (finalI < 4) {
+                                spyImageView.animate()
+                                        .scaleX(1f)
+                                        .setDuration(500).start();
+
+                            })
+                            .start();
+
                         Dialog dialogPersonalizado = new Dialog(Mundo1Activity.this);
                         dialogPersonalizado.setContentView(R.layout.fase_iniciar);
-                        dialogPersonalizado.getWindow().setLayout(dpToPx(Mundo1Activity.this, 300), dpToPx(Mundo1Activity.this, 400));
+                        dialogPersonalizado.getWindow().setLayout(dpToPx(Mundo1Activity.this, 350), dpToPx(Mundo1Activity.this, 450));
 
                         TextView faseAtualTextView = dialogPersonalizado.findViewById(R.id.faseAtualTextView);
                         faseAtualTextView.setText("Fase " + (finalI + 1));
+
+                        TextView mundoAtualTextView = dialogPersonalizado.findViewById(R.id.mundoAtualTextView);
+                        mundoAtualTextView.setText("Mundo 1");
+
+                        TextView conteudosTextView = dialogPersonalizado.findViewById(R.id.conteudoTextView);
+                        TextView descricao = dialogPersonalizado.findViewById(R.id.descricaoTextView);
+                        ImageView temaImageView = dialogPersonalizado.findViewById(R.id.capaFaseImageView);
+
+                        bancoDeDados.collection("Mundos")
+                                .document("mundo1")
+                                .collection("conteudos")
+                                .document(listaConteudos[finalI])
+                                .get()
+                                .addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        String descricaoString = documentSnapshot.getString("descricao");
+                                        String imageUrl = documentSnapshot.getString("imagemReferente");
+
+                                        conteudosTextView.setText("Conteúdos: "+listaConteudos[finalI].toUpperCase());
+                                        descricao.setText(descricaoString);
+
+                                        Glide.with(getApplicationContext())
+                                                .load(imageUrl)
+                                                .into(temaImageView);
+                                    }
+                                });
+
 
                         Button iniciarFaseButton = dialogPersonalizado.findViewById(R.id.iniciarFaseButton);
                         iniciarFaseButton.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +186,9 @@ public class Mundo1Activity extends AppCompatActivity {
                                                     Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
                                                     intent.putExtra("fase", finalI + 1); // só passa o número da fase
                                                     startActivity(intent);
+
+                                                    dialogPersonalizado.cancel();
+
                                                 } else {
                                                     Toast.makeText(
                                                             getApplicationContext(),
@@ -136,12 +206,13 @@ public class Mundo1Activity extends AppCompatActivity {
 
                         dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialogPersonalizado.show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Em breve...",Toast.LENGTH_SHORT).show();
-                    }
                 }
             });
         }
+    }
+
+    public void mostrarEstrelas(){
+
     }
 
     public static int dpToPx(Context context, float dp) {

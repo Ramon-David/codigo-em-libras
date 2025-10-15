@@ -1,9 +1,13 @@
 package com.example.codigo_em_libras;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -62,7 +66,7 @@ public class Fases {
         for (int i = 0; i < 4; i++) {
             botoes[i].setText(questao.alternativas.get(i));
             final String respostaEscolhida = questao.alternativas.get(i);
-            botoes[i].setOnClickListener(v -> verificarResposta(questao, respostaEscolhida, context));
+            botoes[i].setOnClickListener(v -> verificarResposta(questao, respostaEscolhida, context,layoutFilho,1));
         }
 
         return layoutFilho;
@@ -88,11 +92,12 @@ public class Fases {
                 Glide.with(context)
                         .load(questao.alternativas.get(i))
                         .into(botoesSinal[i]);
+                botoesSinal[i].setTag(questao.alternativas.get(i));
             } else {
                 Log.w("DEBUG_IMAGE", "URL alternativa vazia Tipo2: " + questao.pergunta + " botão " + (i+1));
             }
             final String respostaEscolhida = questao.alternativas.get(i);
-            botoesSinal[i].setOnClickListener(v -> verificarResposta(questao, respostaEscolhida, context));
+            botoesSinal[i].setOnClickListener(v -> verificarResposta(questao, respostaEscolhida, context,layoutFilho,2));
         }
 
         return layoutFilho;
@@ -120,7 +125,7 @@ public class Fases {
 
         buttonEnviar.setOnClickListener(v -> {
             String respostaUsuario = editTextResposta.getText().toString().toUpperCase();
-            verificarResposta(questao, respostaUsuario, context);
+            verificarResposta(questao, respostaUsuario, context,layoutFilho,3);
         });
 
         return layoutFilho;
@@ -131,8 +136,74 @@ public class Fases {
     // ----------------- TIPO 5 -----------------
 
 
+    //Mostra a resposta certa
+    public void exibirRespostaCorreta(View layout, String alternativaCorreta, int tipo){
+        switch (tipo){
+            case 1:
+                Button[] botoes = new Button[4];
+                botoes[0] = layout.findViewById(R.id.alternativa1Tipo1Button);
+                botoes[1] = layout.findViewById(R.id.alternativa2Tipo1Button);
+                botoes[2] = layout.findViewById(R.id.alternativa3Tipo1Button);
+                botoes[3] = layout.findViewById(R.id.alternativa4Tipo1Button);
+
+                for (Button botao : botoes) {
+                    if (botao.getText().toString().equals(alternativaCorreta)) {
+
+                        // ✅ Muda a cor de fundo para branco
+                        botao.setBackgroundColor(Color.parseColor("#105D0B"));
+
+                        // ✨ Animação de “pulsar” (cresce e volta)
+                        ScaleAnimation anim = new ScaleAnimation(
+                                1f, 1.1f, // escala X
+                                1f, 1.1f, // escala Y
+                                Animation.RELATIVE_TO_SELF, 0.5f,
+                                Animation.RELATIVE_TO_SELF, 0.5f
+                        );
+                        anim.setDuration(300);
+                        anim.setRepeatCount(1);
+                        anim.setRepeatMode(Animation.REVERSE);
+                        anim.setInterpolator(new AccelerateDecelerateInterpolator());
+
+                        botao.startAnimation(anim);
+                    }
+                }
+                break;
+            case 2:
+                ImageView[] botoesImageView = new ImageView[4];
+                botoesImageView[0] = layout.findViewById(R.id.alternativa1Tipo2ImageView);
+                botoesImageView[1] = layout.findViewById(R.id.alternativa2Tipo2ImageView);
+                botoesImageView[2] = layout.findViewById(R.id.alternativa3Tipo2ImageView);
+                botoesImageView[3] = layout.findViewById(R.id.alternativa4Tipo2ImageView);
+
+
+                for (ImageView botao : botoesImageView) {
+
+                    Object tag = botao.getTag();
+
+                    if (tag != null && tag.toString().equals(alternativaCorreta)) {
+                        botao.setBackgroundColor(Color.parseColor("#105D0B"));
+                    }
+                }
+
+                break;
+            case 3:
+                Toast.makeText(layout.getContext(), "Resposta correta: "+alternativaCorreta, Toast.LENGTH_SHORT).show();
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+
+        if (callback != null) {
+            layout.postDelayed(() -> callback.proximaQuestao(), 1200); // espera 800ms
+        }
+
+    }
+
+
     // ----------------- FUNÇÃO DE VERIFICAÇÃO -----------------
-    private void verificarResposta(Questao questao, String respostaSelecionada, Context context) {
+    private void verificarResposta(Questao questao, String respostaSelecionada, Context context, View layout, int tipo) {
         boolean acertou = false;
 
         if (questao.respostaCorreta != null && respostaSelecionada.equalsIgnoreCase(questao.respostaCorreta)) {
@@ -144,18 +215,23 @@ public class Fases {
             acertou = true;
         }
 
+
+
+
         if (acertou) {
             Toast.makeText(context, "✅ Acertou!", Toast.LENGTH_SHORT).show();
+
             acertos++;
         } else {
             Toast.makeText(context, "❌ Errou!", Toast.LENGTH_SHORT).show();
             erros++;
         }
 
-        if (callback != null) callback.proximaQuestao();
+
+        exibirRespostaCorreta(layout,questao.respostaCorreta, tipo);
     }
 
-    public int contarEstrelas(int estrelas) {
+    public int contarEstrelas() {
         int total = acertos + erros;
         int estrelasCalculadas = (int) Math.floor(acertos * 3.0 / total);
 

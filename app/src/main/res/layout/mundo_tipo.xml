@@ -7,7 +7,7 @@
     android:background="@drawable/fundo_mundos">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/mesaMundoImageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:adjustViewBounds="false"
@@ -20,17 +20,16 @@
             app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
 
-
     <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPagerImageSlider"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toTopOf="@+id/guideline17"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView7"
-            app:layout_constraintVertical_bias="1.0" />
+        android:id="@+id/viewPagerImageSlider"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        app:layout_constraintVertical_bias="1.0" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline16"
@@ -54,19 +53,19 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tituloMundoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/abhaya_libre_medium"
         android:text="Mundo Silencioso"
         android:textColor="#E1E1E9"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintBottom_toBottomOf="@+id/linhaDivisor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/linhaDivisor"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@drawable/linha_divisor"
@@ -115,6 +114,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent=".65" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

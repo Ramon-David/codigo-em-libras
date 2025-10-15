@@ -127,20 +127,68 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void criarDocumentoInicial(String userId,String nome, String email) {
+        bd.collection("JogadorDados")
+                .document(userId)
+                .collection("Dados do Jogo")
+                .document("Progresso")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        criarDocEstrelas(userId);
+                    } else {
+                        Log.d("FIREBASE", "Dados de estrelas já existem.");
+                    }
+                });
+
+        bd.collection("JogadorDados")
+                .document(userId)
+                .collection("Dados da Conta")
+                .document("DadosDaConta")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        criarDadosIniciais(userId, nome, email);
+                    } else {
+                        Log.d("FIREBASE", "Dados da conta ja existem.");
+                    }
+                });
+    }
+
+    private void criarDocEstrelas(String userId){
         Map<String, Object> dadosIniciais = new HashMap<>();
         dadosIniciais.put("EstrelasTotais", 0);
         dadosIniciais.put("FaseAtual", 1);
         dadosIniciais.put("MundoAtual", 1);
 
+        for (int m = 1; m < 4;m++){
+            String nomeMundo = "mundo"+m;
+
+            for (int i = 1; i < 8; i++) {
+                Map<String, Object> faseData = new HashMap<>();
+                faseData.put("estrelas", 0);
+
+                String nomeFase = "fase" + i;
+
+                bd.collection("JogadorDados")
+                        .document(userId)
+                        .collection("Dados do Jogo")
+                        .document("Progresso")
+                        .collection(nomeMundo)
+                        .document(nomeFase)
+                        .set(faseData);
+            }
+        }
+
         bd.collection("JogadorDados")
                 .document(userId)
                 .collection("Dados do Jogo")
                 .document("Progresso")
-                .set(dadosIniciais)
-                .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Dados iniciais criados com sucesso!"))
-                .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao criar documento", e));
+                .set(dadosIniciais);
 
+        Log.d("FIREBASE", "Coleção EstrelasPorFase criada com sucesso!");
+    }
 
+    private void criarDadosIniciais(String userId, String nome, String email){
         Map<String, Object> dadosUsuario = new HashMap<>();
         dadosUsuario.put("Nome", nome);
         dadosUsuario.put("Email", email);
@@ -150,10 +198,11 @@ public class LoginActivity extends AppCompatActivity {
                 .document(userId)
                 .collection("Dados da Conta")
                 .document("DadosDaConta")
-                .set(dadosIniciais)
+                .set(dadosUsuario)
                 .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Dados da conta criados com sucesso!"))
                 .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao criar documento", e));
     }
+
 }
 
 
