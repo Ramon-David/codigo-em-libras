@@ -62,4 +62,7 @@ dependencies {
 
     // RoundedImageView
     implementation("com.makeramen:roundedimageview:2.3.0")
+
+    // Arredondamento das bordar de imagens
+    implementation("com.google.android.material:material:1.9.0")
 }

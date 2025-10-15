@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CódigoEmLibras">
         <activity
+            android:name=".MaterialItem"
+            android:exported="false" />
+        <activity
+            android:name=".MateriaisActivity"
+            android:exported="false" />
+        <activity
             android:name=".Mundo1Activity"
             android:exported="false" />
         <activity

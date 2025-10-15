@@ -99,7 +99,7 @@ public class MissoesFragment extends Fragment {
 
         ViewPager2 viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
 
-        /*List<SliderItem> sliderItems = new ArrayList<>();
+        List<SliderItem> sliderItems = new ArrayList<>();
         sliderItems.add(new SliderItem(R.drawable.mundo1));
         sliderItems.add(new SliderItem(R.drawable.mundo2));
         sliderItems.add(new SliderItem(R.drawable.mundo3));
@@ -125,6 +125,6 @@ public class MissoesFragment extends Fragment {
             if (currentItem < sliderItems.size() - 1) {
                 viewPager2.setCurrentItem(currentItem + 1, true);
             }
-        });*/
+        });
     }
 }
