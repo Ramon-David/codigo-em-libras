@@ -20,6 +20,9 @@
             android:name=".Mundo2Activity"
             android:exported="false" />
         <activity
+            android:name=".MateriaisActivity"
+            android:exported="false" />
+        <activity
             android:name=".Mundo1Activity"
             android:exported="false" />
         <activity
