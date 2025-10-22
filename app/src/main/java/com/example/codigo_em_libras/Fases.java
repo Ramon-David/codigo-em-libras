@@ -148,10 +148,6 @@ public class Fases {
 
                 for (Button botao : botoes) {
                     if (botao.getText().toString().equals(alternativaCorreta)) {
-
-                        // ✅ Muda a cor de fundo para branco
-                        botao.setBackgroundColor(Color.parseColor("#105D0B"));
-
                         // ✨ Animação de “pulsar” (cresce e volta)
                         ScaleAnimation anim = new ScaleAnimation(
                                 1f, 1.1f, // escala X
