@@ -150,8 +150,8 @@ public class Fases {
                     if (botao.getText().toString().equals(alternativaCorreta)) {
                         // ✨ Animação de “pulsar” (cresce e volta)
                         ScaleAnimation anim = new ScaleAnimation(
-                                1f, 1.1f, // escala X
-                                1f, 1.1f, // escala Y
+                                1f, 1.5f, // escala X
+                                1f, 1.5f, // escala Y
                                 Animation.RELATIVE_TO_SELF, 0.5f,
                                 Animation.RELATIVE_TO_SELF, 0.5f
                         );
