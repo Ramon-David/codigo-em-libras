@@ -4,17 +4,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,21 +28,51 @@ public class MateriaisActivity extends AppCompatActivity {
 
     private String mundoSelecionado;
 
+    private ImageButton voltarImageButton;
+    private TextView tituloToolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_materiais);
 
+        // Inicializa os componentes da tela
         recyclerView = findViewById(R.id.recyclerViewMateriais);
         progressBar = findViewById(R.id.progressBarMateriais);
+        voltarImageButton = findViewById(R.id.voltarImageButton);
+        tituloToolBar = findViewById(R.id.tituloToolBar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         materiaisList = new ArrayList<>();
         adapter = new MateriaisAdapter(materiaisList, this::abrirPDF);
+        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER); // Remove o efeito visual das bordas do RecyclerView
         recyclerView.setAdapter(adapter);
 
         // Recebe qual mundo foi selecionado
         mundoSelecionado = getIntent().getStringExtra("mundo");
+
+        // Define o título conforme o mundo recebido
+        if (mundoSelecionado != null) {
+            switch (mundoSelecionado) {
+                case "mundo1":
+                    tituloToolBar.setText("Mundo 1");
+                    break;
+                case "mundo2":
+                    tituloToolBar.setText("Mundo 2");
+                    break;
+                case "mundo3":
+                    tituloToolBar.setText("Mundo 3");
+                    break;
+                default:
+                    tituloToolBar.setText("Materiais");
+                    break;
+            }
+        } else {
+            tituloToolBar.setText("Materiais");
+        }
+
+        // Configura o botão de voltar para fechar a tela
+        voltarImageButton.setOnClickListener(v -> finish());
 
         carregarMateriais();
     }

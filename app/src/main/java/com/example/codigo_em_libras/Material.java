@@ -29,7 +29,9 @@ public class Material {
         this.descricao = descricao;
     }
 
-    public String getUrl() { return url; }
+    public String getUrl() {
+        return url;
+    }
     public void setUrl(String url) {
         this.url = url;
     }
