@@ -3,17 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fundo_mundo1" />
 
     <LinearLayout
         android:id="@+id/escreverLinearLayout"
-        android:layout_width="380dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/perguntaTipo3TextView">
+        app:layout_constraintBottom_toTopOf="@+id/guideline27"
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline32"
+        app:layout_constraintTop_toTopOf="@+id/guideline26">
 
         <ImageView
             android:id="@+id/sinalTipo3ImageView"
@@ -25,53 +37,107 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="167dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="70dp"
+        android:id="@+id/perguntaTipo3TextView"
+        android:layout_width="321dp"
+        android:layout_height="48dp"
         android:fontFamily="@font/abhaya_libre_medium"
         android:gravity="center"
         android:text="Converta:"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/perguntaTipo3TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/abhaya_libre_medium"
-        android:text="Nikki"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        android:textAlignment="gravity"
+        android:textColor="@color/azul_clarinho"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline25"
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline32" />
 
     <Button
         android:id="@+id/enviarTipo3Button"
         android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="250dp"
+        android:layout_height="0dp"
         android:backgroundTint="#1C235F"
         android:fontFamily="@font/abhaya_libre_medium"
         android:text="Enviar"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline31"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/respostaTipo3EditText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" />
 
     <EditText
         android:id="@+id/respostaTipo3EditText"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/azul_clarinho"
         android:ems="10"
         android:hint="Escreva aqui"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/escreverLinearLayout" />
+        android:textColor="@color/azul_clarinho"
+        android:textColorHint="@color/azul_clarinho"
+        app:layout_constraintBottom_toTopOf="@+id/guideline29"
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline32"
+        app:layout_constraintTop_toTopOf="@+id/guideline28" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.375" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.575" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 </androidx.constraintlayout.widget.ConstraintLayout>
