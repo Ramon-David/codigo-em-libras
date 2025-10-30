@@ -1,11 +1,20 @@
 package com.example.codigo_em_libras;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -32,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,6 +64,39 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        ImageView imageView = findViewById(R.id.logoImageView);
+
+        ObjectAnimator zoomX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.05f);
+        ObjectAnimator zoomY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.05f);
+        zoomX.setRepeatMode(ValueAnimator.REVERSE);
+        zoomY.setRepeatMode(ValueAnimator.REVERSE);
+        zoomX.setRepeatCount(ValueAnimator.INFINITE);
+        zoomY.setRepeatCount(ValueAnimator.INFINITE);
+        zoomX.setDuration(10000);
+        zoomY.setDuration(9000);
+        zoomX.start();
+        zoomY.start();
+
+// piscar com alpha
+        Handler handler = new Handler();
+        Random random = new Random();
+        Runnable blinkRunnable = new Runnable() {
+            @Override
+            public void run() {
+                ObjectAnimator blink = ObjectAnimator.ofFloat(imageView, "alpha", 1f, 0.3f);
+                blink.setDuration(200);
+                blink.setRepeatMode(ValueAnimator.REVERSE);
+                blink.setRepeatCount(1);
+                blink.start();
+
+                handler.postDelayed(this, 3000 + random.nextInt(5000));
+            }
+        };
+        handler.post(blinkRunnable);
+
+
+
 
         bd = FirebaseFirestore.getInstance();
 
