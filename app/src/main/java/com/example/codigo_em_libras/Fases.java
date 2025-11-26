@@ -124,7 +124,7 @@ public class Fases {
         Button buttonEnviar = layoutFilho.findViewById(R.id.enviarTipo3Button);
 
         buttonEnviar.setOnClickListener(v -> {
-            String respostaUsuario = editTextResposta.getText().toString().toUpperCase();
+            String respostaUsuario = editTextResposta.getText().toString().trim().toUpperCase();
             verificarResposta(questao, respostaUsuario, context,layoutFilho,3);
         });
 
@@ -136,9 +136,9 @@ public class Fases {
     // ----------------- TIPO 5 -----------------
 
 
-    //Mostra a resposta certa
-    public void exibirRespostaCorreta(View layout, String alternativaCorreta, int tipo){
-        switch (tipo){
+    // Mostra a resposta certa
+    public void exibirRespostaCorreta(View layout, String alternativaCorreta, int tipo) {
+        switch (tipo) {
             case 1:
                 Button[] botoes = new Button[4];
                 botoes[0] = layout.findViewById(R.id.alternativa1Tipo1Button);
@@ -171,19 +171,16 @@ public class Fases {
                 botoesImageView[2] = layout.findViewById(R.id.alternativa3Tipo2ImageView);
                 botoesImageView[3] = layout.findViewById(R.id.alternativa4Tipo2ImageView);
 
-
                 for (ImageView botao : botoesImageView) {
-
                     Object tag = botao.getTag();
 
                     if (tag != null && tag.toString().equals(alternativaCorreta)) {
                         botao.setBackgroundColor(Color.parseColor("#105D0B"));
                     }
                 }
-
                 break;
             case 3:
-                Toast.makeText(layout.getContext(), "Resposta correta: "+alternativaCorreta, Toast.LENGTH_SHORT).show();
+                Toast.makeText(layout.getContext(), "Resposta correta: " + alternativaCorreta, Toast.LENGTH_SHORT).show();
                 break;
             case 4:
                 break;
@@ -194,12 +191,13 @@ public class Fases {
         if (callback != null) {
             layout.postDelayed(() -> callback.proximaQuestao(), 1200); // espera 800ms
         }
-
     }
-
 
     // ----------------- FUNÇÃO DE VERIFICAÇÃO -----------------
     private void verificarResposta(Questao questao, String respostaSelecionada, Context context, View layout, int tipo) {
+        // Desativa cliques extras
+        desativarBotoes(layout, tipo);
+
         boolean acertou = false;
 
         if (questao.respostaCorreta != null && respostaSelecionada.equalsIgnoreCase(questao.respostaCorreta)) {
@@ -211,9 +209,6 @@ public class Fases {
             acertou = true;
         }
 
-
-
-
         if (acertou) {
             Toast.makeText(context, "✅ Acertou!", Toast.LENGTH_SHORT).show();
 
@@ -223,8 +218,40 @@ public class Fases {
             erros++;
         }
 
-
         exibirRespostaCorreta(layout,questao.respostaCorreta, tipo);
+    }
+
+    // ----------------- DESATIVA BOTÕES -----------------
+    // Função para "bloquear" temporariamente os botões ao clicar pela primeira vez, evitando pular várias missões de uma vez
+    private void desativarBotoes(View layout, int tipo) {
+        switch (tipo) {
+            case 1:
+                Button[] botoes = new Button[4];
+                botoes[0] = layout.findViewById(R.id.alternativa1Tipo1Button);
+                botoes[1] = layout.findViewById(R.id.alternativa2Tipo1Button);
+                botoes[2] = layout.findViewById(R.id.alternativa3Tipo1Button);
+                botoes[3] = layout.findViewById(R.id.alternativa4Tipo1Button);
+                for (Button b : botoes) b.setEnabled(false);
+                break;
+            case 2:
+                ImageView[] imagens = new ImageView[4];
+                imagens[0] = layout.findViewById(R.id.alternativa1Tipo2ImageView);
+                imagens[1] = layout.findViewById(R.id.alternativa2Tipo2ImageView);
+                imagens[2] = layout.findViewById(R.id.alternativa3Tipo2ImageView);
+                imagens[3] = layout.findViewById(R.id.alternativa4Tipo2ImageView);
+                for (ImageView img : imagens) img.setEnabled(false);
+                break;
+            case 3:
+                Button enviar = layout.findViewById(R.id.enviarTipo3Button);
+                enviar.setEnabled(false);
+                break;
+            /*
+            case 4:
+                break;
+            case 5:
+                break;
+            */
+        }
     }
 
     public int contarEstrelas() {
@@ -263,5 +290,4 @@ public class Fases {
             }).addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar progresso", e));
         }*/
     }
-
 }

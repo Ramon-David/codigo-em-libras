@@ -73,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         zoomY.setRepeatMode(ValueAnimator.REVERSE);
         zoomX.setRepeatCount(ValueAnimator.INFINITE);
         zoomY.setRepeatCount(ValueAnimator.INFINITE);
-        zoomX.setDuration(10000);
-        zoomY.setDuration(9000);
+        zoomX.setDuration(5000);
+        zoomY.setDuration(4500);
         zoomX.start();
         zoomY.start();
 

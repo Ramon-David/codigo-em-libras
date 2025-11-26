@@ -1,21 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#DAE9FA"
+    android:paddingStart="20dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="16dp"
     tools:context=".ContaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/logoutButton"
-        android:layout_width="100dp"
-        android:layout_height="41dp"
-        android:layout_gravity="center|start"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:contentDescription="Minha imagem"
-        android:src="@drawable/logout_button" />
+        <ImageView
+            android:id="@+id/imgPerfil"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Foto de perfil"
+            android:background="@drawable/imagem_circulo"
+            android:padding="2dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clipToOutline="true" />
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/infoUsuario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/imgPerfil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgPerfil"
+            app:layout_constraintTop_toTopOf="@id/imgPerfil">
+
+            <TextView
+                android:id="@+id/txtNomeUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome do Usuário"
+                android:textColor="#1B2237"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtEmailUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="usuario@gmail.com"
+                android:textColor="#1B2237"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divisor1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="#CCCCCC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgPerfil" />
+
+        <TextView
+            android:id="@+id/txtConfiguracoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Configurações"
+            android:textColor="#1B2237"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divisor1" />
+
+        <TextView
+            android:id="@+id/txtTema"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="🌞 Tema"
+            android:textColor="#1B2237"
+            android:textColorHint="#000000"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtConfiguracoes" />
+
+        <Switch
+            android:id="@+id/switchTema"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColorLink="#07146A"
+            android:textOff="Claro"
+            android:textOn="Escuro"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtTema" />
+
+        <View
+            android:id="@+id/divisor2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="#CCCCCC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/switchTema" />
+
+        <TextView
+            android:id="@+id/txtOutros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Outros"
+            android:textColor="#1B2237"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divisor2" />
+
+        <ImageView
+            android:id="@+id/logoutButton"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="25dp"
+            android:contentDescription="Botão de sair"
+            android:src="@drawable/logout_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtOutros" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
