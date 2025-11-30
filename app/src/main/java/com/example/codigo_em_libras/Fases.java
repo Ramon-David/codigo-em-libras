@@ -11,6 +11,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Fases {
     int erros;
@@ -125,18 +128,99 @@ public class Fases {
 
         buttonEnviar.setOnClickListener(v -> {
             String respostaUsuario = editTextResposta.getText().toString().trim().toUpperCase();
-            verificarResposta(questao, respostaUsuario, context,layoutFilho,3);
+            if (!respostaUsuario.isEmpty()) {
+                verificarResposta(questao, respostaUsuario, context,layoutFilho,3);
+            } else {
+                Toast.makeText(context, "Digite uma resposta antes de enviar.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return layoutFilho;
     }
 
-    // ----------------- TIPO 4 -----------------
+    // ---------------- TIPO 4 ----------------
+    public View criarFaseTipo4(LayoutInflater inflater, FrameLayout rootLayout, Questao questao, Context context) {
+        View layoutFilho = inflater.inflate(R.layout.questao_tipo4, rootLayout, false);
 
-    // ----------------- TIPO 5 -----------------
+        TextView pergunta = layoutFilho.findViewById(R.id.perguntaTipo4TextView);
+        pergunta.setText(questao.pergunta);
 
+        ImageView slot1 = layoutFilho.findViewById(R.id.slot1Tipo4);
+        ImageView slot2 = layoutFilho.findViewById(R.id.slot2Tipo4);
+        ImageView slot3 = layoutFilho.findViewById(R.id.slot3Tipo4);
 
-    // Mostra a resposta certa
+        Button buttonEnviar = layoutFilho.findViewById(R.id.enviarTipo4Button);
+
+        ArrayList<ImageView> slots = new ArrayList<>();
+        slots.add(slot1);
+        slots.add(slot2);
+        slots.add(slot3);
+
+        // 6 botões
+        ImageButton[] botoes = {
+                layoutFilho.findViewById(R.id.alternativa1Tipo4ImageButton),
+                layoutFilho.findViewById(R.id.alternativa2Tipo4ImageButton),
+                layoutFilho.findViewById(R.id.alternativa3Tipo4ImageButton),
+                layoutFilho.findViewById(R.id.alternativa4Tipo4ImageButton),
+                layoutFilho.findViewById(R.id.alternativa5Tipo4ImageButton),
+                layoutFilho.findViewById(R.id.alternativa6Tipo4ImageButton)
+        };
+
+        // preencher imagens e setar apenas o comportamento de colocar nos slots
+        for (int i = 0; i < botoes.length; i++) {
+            final String url = (questao.alternativasTipo4Array.size() > i) ? questao.alternativasTipo4Array.get(i) : null;
+            if (url != null) {
+                Glide.with(context).load(url).into(botoes[i]);
+                botoes[i].setTag(url);
+            } else {
+                botoes[i].setEnabled(false);
+                botoes[i].setTag(null);
+            }
+
+            botoes[i].setOnClickListener(v -> {
+                // apenas preencher o primeiro slot vazio
+                for (ImageView s : slots) {
+                    if (s.getTag() == null) {
+                        s.setTag(v.getTag());
+                        Glide.with(context).load(String.valueOf(v.getTag())).into(s);
+                        break;
+                    }
+                }
+            });
+        }
+
+        // Permitir remover uma imagem do slot ao clicar nele
+        for (ImageView s : slots) {
+            s.setOnClickListener(v -> {
+                // se tiver algo, limpa
+                if (v.getTag() != null) {
+                    v.setTag(null);
+                    ((ImageView) v).setImageDrawable(null); // remove imagem
+                    Toast.makeText(context, "Resposta removida.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        buttonEnviar.setOnClickListener(view -> {
+            if (slots.get(0).getTag() != null &&
+                    slots.get(1).getTag() != null &&
+                    slots.get(2).getTag() != null) {
+
+                String userResposta =
+                        slots.get(0).getTag().toString().trim() + "|" +
+                                slots.get(1).getTag().toString().trim() + "|" +
+                                slots.get(2).getTag().toString().trim();
+
+                verificarResposta(questao, userResposta, context, layoutFilho, 4);
+            } else {
+                Toast.makeText(context, "Preencha todos os campos antes de verificar.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return layoutFilho;
+    }
+
+    //------------------ Mostrar resposta correta --------------------
     public void exibirRespostaCorreta(View layout, String alternativaCorreta, int tipo) {
         switch (tipo) {
             case 1:
@@ -183,6 +267,7 @@ public class Fases {
                 Toast.makeText(layout.getContext(), "Resposta correta: " + alternativaCorreta, Toast.LENGTH_SHORT).show();
                 break;
             case 4:
+                Toast.makeText(layout.getContext(), "Resposta incorreta! Ainda vamos ver um jeito de mostrar a correta nesse caso", Toast.LENGTH_SHORT).show();
                 break;
             case 5:
                 break;
@@ -200,25 +285,46 @@ public class Fases {
 
         boolean acertou = false;
 
+        // --- VERIFICAÇÃO DOS TIPOS 1 A 3 ---
         if (questao.respostaCorreta != null && respostaSelecionada.equalsIgnoreCase(questao.respostaCorreta)) {
             acertou = true;
         }
 
-        if (questao.respostaCorretaArray != null &&
-                questao.respostaCorretaArray.equals(Arrays.asList(respostaSelecionada.split("")))) {
-            acertou = true;
+        // --- VERIFICAÇÃO DO TIPO 4 ---
+        if (tipo == 4 && questao.respostaCorretaArray != null) {
+
+            // respostaSelecionada vem no formato: "url1|url4|url6"
+            String[] urlsEscolhidas = respostaSelecionada.split("\\|");
+
+            List<String> esperado = questao.respostaCorretaArray;
+            ArrayList<String> escolhidoIndices = new ArrayList<>();
+
+            // Para cada URL escolhida, descobrir qual índice ela é dentro das alternativas do tipo 4
+            for (String url : urlsEscolhidas) {
+                int index = questao.alternativasTipo4Array.indexOf(url);
+                if (index != -1) {
+                    // Somamos +1 porque o Firebase usa 1 a 6, não 0 a 5
+                    escolhidoIndices.add(String.valueOf(index + 1));
+                }
+            }
+
+            // Compara a lista de índices obtidos com a lista correta
+            if (escolhidoIndices.equals(esperado)) {
+                acertou = true;
+            }
         }
 
         if (acertou) {
             Toast.makeText(context, "✅ Acertou!", Toast.LENGTH_SHORT).show();
-
             acertos++;
+
+            layout.postDelayed(() -> callback.proximaQuestao(), 1200); // Serve para agendar uma ação para rodar mais tarde, na UI Thread (a thread da interface)
+
         } else {
             Toast.makeText(context, "❌ Errou!", Toast.LENGTH_SHORT).show();
             erros++;
+            exibirRespostaCorreta(layout, questao.respostaCorreta, tipo); // já chama proximaQuestao
         }
-
-        exibirRespostaCorreta(layout,questao.respostaCorreta, tipo);
     }
 
     // ----------------- DESATIVA BOTÕES -----------------
@@ -245,9 +351,27 @@ public class Fases {
                 Button enviar = layout.findViewById(R.id.enviarTipo3Button);
                 enviar.setEnabled(false);
                 break;
-            /*
             case 4:
+                ImageButton[] botoesTipo4 = {
+                        layout.findViewById(R.id.alternativa1Tipo4ImageButton),
+                        layout.findViewById(R.id.alternativa2Tipo4ImageButton),
+                        layout.findViewById(R.id.alternativa3Tipo4ImageButton),
+                        layout.findViewById(R.id.alternativa4Tipo4ImageButton),
+                        layout.findViewById(R.id.alternativa5Tipo4ImageButton),
+                        layout.findViewById(R.id.alternativa6Tipo4ImageButton)
+                };
+                for (ImageButton b : botoesTipo4) b.setEnabled(false);
                 break;
+
+                /*
+                // A desabilitação de tipo 4 vai funcionar assim quando o botão "Enviar" for corrigido.
+                Button enviar = layout.findViewById(R.id.enviarTipo4Button);
+                enviar.setEnabled(false);
+                break;
+                */
+
+                // Quando testar, provavelmente vai precisar desabilitar somente o botão de enviar.
+            /*
             case 5:
                 break;
             */

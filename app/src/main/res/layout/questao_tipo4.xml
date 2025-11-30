@@ -10,6 +10,7 @@
         android:layout_width="180dp"
         android:layout_height="48dp"
         android:layout_marginTop="70dp"
+        android:fontFamily="@font/abhaya_libre_medium"
         android:gravity="center"
         android:text="Componha:"
         android:textSize="36sp"
@@ -18,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/perguntaTipo4TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -27,6 +28,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perguntaTipo4TextView">
+
+        <ImageButton
+            android:id="@+id/slot1Tipo4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="GestoPosto" />
+
+        <ImageButton
+            android:id="@+id/slot2Tipo4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="GestoPosto" />
+
+        <ImageButton
+            android:id="@+id/slot3Tipo4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="GestoPosto" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -39,6 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
+        <!-- Primeira linha (mantida) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -46,28 +81,25 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/alternativa1Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
             <ImageButton
-                android:id="@+id/imageButton6"
+                android:id="@+id/alternativa2Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/alternativa3Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
@@ -80,71 +112,25 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton11"
+                android:id="@+id/alternativa4Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
             <ImageButton
-                android:id="@+id/imageButton10"
+                android:id="@+id/alternativa5Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
             <ImageButton
-                android:id="@+id/imageButton8"
+                android:id="@+id/alternativa6Tipo4ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="Gesto"
-                app:srcCompat="@drawable/baseline_collections_bookmark" />
-
-            <ImageButton
-                android:id="@+id/imageButton9"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="Gesto"
-                app:srcCompat="@drawable/baseline_collections_bookmark" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/imageButton14"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="Gesto"
-                app:srcCompat="@drawable/baseline_collections_bookmark" />
-
-            <ImageButton
-                android:id="@+id/imageButton13"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="Gesto"
-                app:srcCompat="@drawable/baseline_collections_bookmark" />
-
-            <ImageButton
-                android:id="@+id/imageButton12"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
@@ -152,34 +138,15 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
+        android:id="@+id/enviarTipo4Button"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
         android:layout_marginTop="50dp"
-        android:backgroundTint="#1F386B"
+        android:backgroundTint="#1C235F"
         android:text="Enviar"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-        <ImageButton
-            android:id="@+id/imageButton15"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="GestoPosto"
-            app:srcCompat="@drawable/baseline_collections_bookmark" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ public class Questao {
     public List<String> alternativas;
     public String respostaCorreta;            // Para os tipos 1–3, 5
     public List<String> respostaCorretaArray; // Para o tipo 4
+    public List<String> alternativasTipo4Array;
     public int tipo;
     public int nivel;
     public String conteudo;
@@ -46,6 +47,14 @@ public class Questao {
 
     public void setRespostaCorreta(String respostaCorreta) {
         this.respostaCorreta = respostaCorreta;
+    }
+
+    public List<String> getAlternativasTipo4Array() {
+        return alternativasTipo4Array;
+    }
+
+    public void setAlternativasTipo4Array(List<String> alternativasTipo4Array) {
+        this.alternativasTipo4Array = alternativasTipo4Array;
     }
 
     public List<String> getRespostaCorretaArray() {

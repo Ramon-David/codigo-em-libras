@@ -1,6 +1,5 @@
 package com.example.codigo_em_libras;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +31,7 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
 
     private String conteudoAtual;
     private int faseAtual;
-    private static final int MAX_QUESTOES = 4;
+    private static final int MAX_QUESTOES = 5;
 
     // Lista de conteúdos (na ordem das fases)
     private final String[] listaConteudos = {
@@ -108,7 +106,10 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
                                 questao.respostaCorreta = safeString(respostaCorreta);
                             }
 
-                            // respostaCorretaArray -> apenas para tipo 4
+                            // As 6 imagens do tipo 4
+                            questao.alternativasTipo4Array = toStringList(data.get("alternativasArray"));
+
+                            // Ordem correta dos 3 slots
                             questao.respostaCorretaArray = toStringList(data.get("respostaCorretaArray"));
 
                             questao.tipo = parseIntSafe(data.get("tipo"), 1);
@@ -123,6 +124,7 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
                     }
 
                     Log.d(TAG, "Total questoes carregadas: " + (questoesList == null ? 0 : questoesList.size()));
+                    // Log.d(TAG, "Total questoes carregadas: " + questoesList.size());   ->   mesmo código só que mais limpo
                     mostrarQuestao();
                 })
                 .addOnFailureListener(e -> {
@@ -193,10 +195,10 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
             case 3:
                 viewQuestao = fases.criarFaseTipo3(getLayoutInflater(), rootLayout, questao, this);
                 break;
-            /*
             case 4:
                 viewQuestao = fases.criarFaseTipo4(getLayoutInflater(), rootLayout, questao, this);
                 break;
+            /*
             case 5:
                 viewQuestao = fases.criarFaseTipo5(getLayoutInflater(), rootLayout, questao, this);
                 break;
