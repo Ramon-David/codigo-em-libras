@@ -2,6 +2,8 @@ package com.example.codigo_em_libras;
 
 import static android.app.PendingIntent.getActivity;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -139,73 +141,67 @@ public class Mundo1Activity extends AppCompatActivity {
                         TextView descricao = dialogPersonalizado.findViewById(R.id.descricaoTextView);
                         ImageView temaImageView = dialogPersonalizado.findViewById(R.id.capaFaseImageView);
 
-                        bancoDeDados.collection("Mundos")
-                                .document("mundo1")
-                                .collection("conteudos")
-                                .document(listaConteudos[finalI])
-                                .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        String descricaoString = documentSnapshot.getString("descricao");
-                                        String imageUrl = documentSnapshot.getString("imagemReferente");
+                        PrefsHelper prefs = new PrefsHelper(Mundo1Activity.this);
+                        String dadosMundo = prefs.getString("prefs_mundo1");
 
-                                        conteudosTextView.setText("Conteúdos: "+listaConteudos[finalI].toUpperCase());
-                                        descricao.setText(descricaoString);
+                        if (dadosMundo != null && dadosMundo.contains("|")) {
+                            String[] conteudos = dadosMundo.split("\\|");
+                            String infoConteudoEscolhido = "";
 
-                                        Glide.with(getApplicationContext())
-                                                .load(imageUrl)
-                                                .into(temaImageView);
-                                    }
-                                });
-
-
-                        Button iniciarFaseButton = dialogPersonalizado.findViewById(R.id.iniciarFaseButton);
-                        iniciarFaseButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d("FIREBASE", "Estrelas: " + 3 +
-                                        " | Fase: " + 2 +
-                                        " | Mundo: " + 3);
-                                // getActivity() retorna o contexto da Activity que hospeda o Fragment
-                                bancoDeDados.collection("JogadorDados")
-                                        .document(userId)
-                                        .collection("Dados do Jogo")
-                                        .document("Progresso")
-                                        .get()
-                                        .addOnSuccessListener(documentSnapshot -> {
-                                            if (documentSnapshot.exists()) {
-                                                Long estrelasTotais = documentSnapshot.getLong("EstrelasTotais");
-                                                Long faseAtual = documentSnapshot.getLong("FaseAtual");
-                                                Long mundoAtual = documentSnapshot.getLong("MundoAtual");
-
-                                                Log.d("FIREBASE", "Estrelas: " + estrelasTotais +
-                                                        " | Fase: " + faseAtual +
-                                                        " | Mundo: " + mundoAtual);
-
-                                                if (mundoAtual >= 1 && faseAtual >= (finalI + 1)) {
-                                                    Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
-                                                    intent.putExtra("fase", finalI + 1); // só passa o número da fase
-                                                    startActivity(intent);
-
-                                                    dialogPersonalizado.cancel();
-
-                                                } else {
-                                                    Toast.makeText(
-                                                            getApplicationContext(),
-                                                            "Você ainda não pode acessar essa fase! Complete a fase " + finalI + " antes de acessá-la!",
-                                                            Toast.LENGTH_SHORT
-                                                    ).show();
-                                                }
-                                            } else {
-                                                Log.d("FIREBASE", "Documento não encontrado!");
-                                            }
-                                        })
-                                        .addOnFailureListener(e -> Log.e("FIREBASE", "Erro ao buscar dados", e));
+                            for (String conteudo:conteudos){
+                                String[] contInfo = conteudo.split(";");
+                                if (contInfo[0].equals(listaConteudos[finalI])){
+                                    infoConteudoEscolhido = conteudo;
+                                    break;
+                                }
                             }
-                        });
 
-                        dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialogPersonalizado.show();
+                            String[] dadosConteudo = infoConteudoEscolhido.split(";");
+                            String nomeConteudo = dadosConteudo[0];
+                            String descricaoConteudo = dadosConteudo[1];
+                            String imagemReferente = dadosConteudo[2];
+                            String questoesString = dadosConteudo[3];
+
+                            conteudosTextView.setText("Conteúdos: "+nomeConteudo.toUpperCase());
+                            descricao.setText(descricaoConteudo);
+
+                            Glide.with(getApplicationContext())
+                                    .load(imagemReferente)
+                                    .into(temaImageView);
+
+                            String progressoJogador = prefs.getString("prefs_progresso");
+                            String[] infoProgresso = progressoJogador.split("\\|");
+
+                            int mundoAtual = Integer.parseInt(infoProgresso[2].replace("MundoAtual=",""));
+                            int faseAtual = Integer.parseInt(infoProgresso[1].replace("FaseAtual=",""));
+
+                            Button iniciarFaseButton = dialogPersonalizado.findViewById(R.id.iniciarFaseButton);
+                            iniciarFaseButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (mundoAtual >= 1 && faseAtual >= (finalI + 1)) {
+                                        Intent intent = new Intent(Mundo1Activity.this, FaseActivity.class);
+                                        intent.putExtra("fase", finalI + 1); // só passa o número da fase
+
+                                        startActivity(intent);
+                                        dialogPersonalizado.cancel();
+
+                                    }else {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "Você ainda não pode acessar essa fase! Complete a fase " + (faseAtual) + " antes de acessá-la!",
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                    }
+                                }
+                            });
+
+                            dialogPersonalizado.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialogPersonalizado.show();
+
+                            Log.d("CACHE SUPREME",questoesString);
+
+                        }
                 }
             });
         }

@@ -1,6 +1,7 @@
 package com.example.codigo_em_libras;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +45,10 @@ public class MissoesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private ViewPager2 viewPager2;
+    SharedPreferences.OnSharedPreferenceChangeListener listener;
+
+    TextView quantidadeEstrelas;
+
 
     public MissoesFragment() {
         // Required empty public constructor
@@ -73,6 +79,8 @@ public class MissoesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -108,12 +116,31 @@ public class MissoesFragment extends Fragment {
         SliderAdapter adapter = new SliderAdapter(sliderItems, viewPager2);
         viewPager2.setAdapter(adapter);
 
+        quantidadeEstrelas = layoutFilho.findViewById(R.id.quantidadeEstrelas);
+        PrefsHelper prefs = new PrefsHelper(requireContext());
 
+        // Listener para atualizar as estrelas quando mudar
+        listener = (sharedPrefs, key) -> {
+            if ("estrelas".equals(key)) {
+                int novasEstrelas = new SalvamentoDados().contarEstrelas(requireContext());
+                quantidadeEstrelas.setText(novasEstrelas + "/63");
+            }
+        };
+
+        int novasEstrelas = new SalvamentoDados().contarEstrelas(requireContext());
+
+        quantidadeEstrelas.setText(novasEstrelas + "/63");
+
+        // Registrar o listener
+        PrefsHelper prefsHelper = new PrefsHelper(requireContext());
+
+        prefsHelper.getPrefs().registerOnSharedPreferenceChangeListener(listener);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             String imagemAntiga = "";
             String imagemAtual = "";
             int mesaDrawable;
             String mundoTitulo = "";
+
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -137,7 +164,7 @@ public class MissoesFragment extends Fragment {
 
                 tituloMundo.setText(mundoTitulo);
 
-                if (!imagemAntiga.equals(imagemAtual)) {
+                if (!Objects.equals(imagemAntiga, imagemAtual)) {
                     imageMesa.animate()
                             .translationY(500f)
                             .setDuration(300)

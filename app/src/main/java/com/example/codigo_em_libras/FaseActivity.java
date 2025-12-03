@@ -1,5 +1,7 @@
 package com.example.codigo_em_libras;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -141,42 +143,55 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
             int proximaFase = faseAtual + 1;
             FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
 
-            if (usuarioAtual != null) {
-                String userId = usuarioAtual.getUid();
-                DocumentReference progresso = bancoDeDados.collection("JogadorDados")
-                        .document(userId)
-                        .collection("Dados do Jogo")
-                        .document("Progresso");
+            PrefsHelper prefs = new PrefsHelper(FaseActivity.this);
+            String progressoJogador = prefs.getString("prefs_progresso");
 
+            String[] infoProgresso = progressoJogador.split("\\|");
 
-                        progresso.get().addOnSuccessListener(doc -> {
-                            long faseRegistrada = doc.getLong("FaseAtual");
-                            long mundoAtual = doc.getLong("MundoAtual");
+            String mundoAtualString = infoProgresso[2].replace("MundoAtual=","");
+            String faseRegistradaString = infoProgresso[1].replace("FaseAtual=","");
 
-                            if (faseRegistrada < proximaFase){
-                                if (proximaFase > 7) {
-                                    doc.getReference().update("FaseAtual", 1);
-                                    doc.getReference().update("MundoAtual", mundoAtual+1);
-                                }else{
-                                    doc.getReference().update("FaseAtual", proximaFase);
-                                }
-                            }
-                        });
+            int mundoAtual = parseIntSafe(mundoAtualString,1);
+            int faseRegistrada = parseIntSafe(faseRegistradaString,1);
 
-                        progresso.collection("mundo1")
-                        .document("fase"+faseAtual)
-                        .get()
-                        .addOnSuccessListener(doc -> {
-                            long estrelaPorFase = doc.getLong("estrelas");
-                            int numeroEstrelasAtual = fases.contarEstrelas();
-
-                            Toast.makeText(getApplicationContext(),"Você recebeu "+numeroEstrelasAtual+" estrelas!",Toast.LENGTH_SHORT).show();
-
-                            if (numeroEstrelasAtual > estrelaPorFase) {
-                                doc.getReference().update("estrelas", numeroEstrelasAtual);
-                            }
-                        });
+            if (faseRegistrada < proximaFase){
+                if (proximaFase > 7) {
+                    infoProgresso[1] = "FaseAtual="+1;
+                    infoProgresso[2] = "MundoAtual="+(mundoAtual+1);
+                }else{
+                    infoProgresso[1] = "FaseAtual="+proximaFase;
+                }
             }
+
+            String chaveEstrela = "mundo"+mundoAtual+"_fase"+faseAtual+"=";
+
+            int estrelaPorFase = 0;
+            int numeroEstrelasAtual = fases.contarEstrelas();
+
+            for (int i = 0; i < infoProgresso.length; i++){
+                if (infoProgresso[i].contains(chaveEstrela)){
+                    String estrelaPorFaseString = infoProgresso[i].replace(chaveEstrela,"");
+                    estrelaPorFase = parseIntSafe(estrelaPorFaseString, 0);
+
+                    if (numeroEstrelasAtual > estrelaPorFase) {
+                        infoProgresso[i] = chaveEstrela+numeroEstrelasAtual;
+                    }
+                    break;
+                }
+            }
+
+            StringBuilder dadosAtualizados = new StringBuilder();
+
+            for (String item : infoProgresso) {
+                dadosAtualizados.append(item).append("|");
+            }
+
+            prefs.putString("prefs_progresso",dadosAtualizados.toString());
+            Log.d("SOCORRO cache", dadosAtualizados.toString());
+
+            new SalvamentoDados().salvarDadosConta(FaseActivity.this);
+            Toast.makeText(getApplicationContext(),"Você recebeu "+numeroEstrelasAtual+" estrelas!",Toast.LENGTH_SHORT).show();
+
             finish();
             return;
         }
