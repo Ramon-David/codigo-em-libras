@@ -5,15 +5,204 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Mundo2Activity">
+    tools:context=".Mundo1Activity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/mundoBarLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mundo 2"
+        android:background="@drawable/custom_background_action_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/voltarImageButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="#00FFFFFF"
+                android:contentDescription="Botão de Voltar"
+                android:scaleType="centerCrop"
+                android:tint="#A5CDD1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+            <TextView
+                android:id="@+id/tituloToolBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fonte_titulos"
+                android:gravity="center"
+                android:text="Mundo 2"
+                android:textColor="#b3cfe5"
+                android:textSize="45sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/mundoBarLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <FrameLayout
+                android:layout_width="900dp"
+                android:layout_height="900dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mapaContainer"
+                    android:layout_width="900dp"
+                    android:layout_height="900dp"
+                    android:background="@drawable/mundo1_mapa">
+
+
+                    <ImageButton
+                        android:id="@+id/fase1ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="168dp"
+                        android:layout_marginEnd="112dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Mundo Atual"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase2ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="264dp"
+                        android:layout_marginEnd="352dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase3ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="384dp"
+                        android:layout_marginEnd="412dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase4ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="516dp"
+                        android:layout_marginEnd="516dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase5ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="428dp"
+                        android:layout_marginEnd="740dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase6ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="556dp"
+                        android:layout_marginEnd="812dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="@id/mapaContainer"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageButton
+                        android:id="@+id/fase7ImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="792dp"
+                        android:layout_marginEnd="688dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Missões"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="@id/mapaContainer"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ficha_mundos" />
+
+                    <ImageView
+                        android:id="@+id/spyImageView"
+                        android:layout_width="50dp"
+                        android:layout_height="70dp"
+                        android:layout_marginBottom="35dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/fase1ImageButton"
+                        app:layout_constraintEnd_toEndOf="@+id/fase1ImageButton"
+                        app:layout_constraintStart_toStartOf="@+id/fase1ImageButton"
+                        app:srcCompat="@drawable/silhueta_spy" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+        </ScrollView>
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/degrade_preto" />
+
+
+    <!--<ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/molde_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

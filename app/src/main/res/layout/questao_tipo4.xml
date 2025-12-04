@@ -3,7 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fundo_mundo1" />
 
     <TextView
         android:id="@+id/textView5"
@@ -14,6 +28,7 @@
         android:gravity="center"
         android:text="Componha:"
         android:textSize="36sp"
+        android:textColor="@color/azul_clarinho"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="Bom dia"
+        android:textColor="@color/azul_clarinho"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +61,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="GestoPosto" />
 
         <ImageButton
@@ -52,6 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="GestoPosto" />
 
         <ImageButton
@@ -59,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="GestoPosto" />
     </LinearLayout>
 
@@ -85,6 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
@@ -93,6 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
@@ -101,6 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
         </LinearLayout>
@@ -116,6 +139,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
@@ -124,6 +148,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
 
@@ -132,6 +157,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
                 android:contentDescription="Gesto"
                 app:srcCompat="@drawable/baseline_collections_bookmark" />
         </LinearLayout>
