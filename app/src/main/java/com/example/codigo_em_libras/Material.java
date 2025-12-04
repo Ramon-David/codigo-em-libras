@@ -5,14 +5,19 @@ public class Material {
     private String descricao;
     private String url;
     private int ordem;
+    private String faseVinculada;
+    private boolean desbloqueado;
+
 
     public Material() { }
 
-    public Material(String titulo, String descricao, String url) {
+    public Material(String titulo, String descricao, String url, String faseVinculada, boolean desbloqueado) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
         this.ordem = ordem;
+        this.faseVinculada = faseVinculada;
+        this.desbloqueado = desbloqueado;
     }
 
     public String getTitulo() {
@@ -42,5 +47,21 @@ public class Material {
 
     public void setOrdem(int ordem) {
         this.ordem = ordem;
+    }
+
+    public String getFaseVinculada() {
+        return faseVinculada;
+    }
+
+    public void setFaseVinculada(String faseVinculada) {
+        this.faseVinculada = faseVinculada;
+    }
+
+    public boolean isDesbloqueado() {
+        return desbloqueado;
+    }
+
+    public void setDesbloqueado(boolean desbloqueado) {
+        this.desbloqueado = desbloqueado;
     }
 }

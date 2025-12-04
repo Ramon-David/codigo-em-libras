@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -125,14 +126,55 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
                         }
                     }
 
-                    Log.d(TAG, "Total questoes carregadas: " + (questoesList == null ? 0 : questoesList.size()));
-                    // Log.d(TAG, "Total questoes carregadas: " + questoesList.size());   ->   mesmo código só que mais limpo
+                    // Randomização por tipo (mantendo a ordem 1 -> 2 -> 3 -> 2 -> 4)
+                    questoesList = organizarPorTipo(questoesList);
                     mostrarQuestao();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Erro ao carregar questões!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Erro get questoes", e);
                 });
+    }
+
+    private List<Questao> organizarPorTipo(List<Questao> originais) {
+        List<Questao> tipo1 = new ArrayList<>();
+        List<Questao> tipo2 = new ArrayList<>();
+        List<Questao> tipo3 = new ArrayList<>();
+        List<Questao> tipo4 = new ArrayList<>();
+
+        for (Questao q : originais) {
+            switch (q.tipo) {
+                case 1:
+                    tipo1.add(q);
+                    break;
+                case 2:
+                    tipo2.add(q);
+                    break;
+                case 3:
+                    tipo3.add(q);
+                    break;
+                case 4:
+                    tipo4.add(q);
+                    break;
+            }
+        }
+
+        // Embaralha cada grupo (que está armazenado em listas separadas)
+        Collections.shuffle(tipo1);
+        Collections.shuffle(tipo2);
+        Collections.shuffle(tipo3);
+        Collections.shuffle(tipo4);
+
+        // Reconstrói na ordem desejada dos tipos: 1 → 2 → 3 → 2 → 4
+        List<Questao> novaLista = new ArrayList<>();
+
+        if (!tipo1.isEmpty()) novaLista.add(tipo1.remove(0)); // Obs.: esse modelo de condicional é mais compacto, ideal
+        if (!tipo2.isEmpty()) novaLista.add(tipo2.remove(0)); // para quando só existe uma condição dentro do IF.
+        if (!tipo3.isEmpty()) novaLista.add(tipo3.remove(0)); // O modelo convencional também funcionaria, mas optamos por
+        if (!tipo2.isEmpty()) novaLista.add(tipo2.remove(0)); // esse para diminuir o código em si, que está muito grande.
+        if (!tipo4.isEmpty()) novaLista.add(tipo4.remove(0));
+
+        return novaLista;
     }
 
     private void mostrarQuestao() {
@@ -213,11 +255,6 @@ public class FaseActivity extends AppCompatActivity implements Fases.QuestaoCall
             case 4:
                 viewQuestao = fases.criarFaseTipo4(getLayoutInflater(), rootLayout, questao, this);
                 break;
-            /*
-            case 5:
-                viewQuestao = fases.criarFaseTipo5(getLayoutInflater(), rootLayout, questao, this);
-                break;
-             */
             default:
                 return;
         }

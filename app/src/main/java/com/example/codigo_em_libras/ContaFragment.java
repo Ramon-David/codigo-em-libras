@@ -1,7 +1,6 @@
 package com.example.codigo_em_libras;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -29,8 +28,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -44,11 +41,11 @@ public class ContaFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> abrirGaleria;
 
-    // Variáveis carregadas do SharedPreferences
-    String email;
-    String nome;
-    boolean modoEscuro;
-    String imagemBase64;
+    // Dados carregados do SharedPreferences
+    private String email;
+    private String nome;
+    private String imagemBase64;
+    private boolean modoEscuro;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +53,7 @@ public class ContaFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
+        // Login Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -77,10 +75,10 @@ public class ContaFragment extends Fragment {
         switchTema = view.findViewById(R.id.switchTema);
         logoutButton = view.findViewById(R.id.logoutButton);
 
-        // -------------------------------
-        //   Carrega SharedPreferences
-        // -------------------------------
+        // Carrega SharedPreferences
         PrefsHelper prefs = new PrefsHelper(requireContext());
+
+        // Recupera dados salvos
         String dadosConta = prefs.getString("prefs_conta");
 
         if (dadosConta != null && dadosConta.contains(";")) {
@@ -96,52 +94,51 @@ public class ContaFragment extends Fragment {
         txtEmailUsuario.setText(email);
         switchTema.setChecked(modoEscuro);
 
-        // -------------------------------
-        //   Carrega Foto de Perfil
-        // -------------------------------
+        // Foto de perfil
         if (imagemBase64 != null && !imagemBase64.isEmpty()) {
             imgPerfil.setImageBitmap(converterBase64ParaBitmap(imagemBase64));
         }
 
-        // -------------------------------
-        //   Aplica Tema
-        // -------------------------------
+        // Aplica tema salvo
         AppCompatDelegate.setDefaultNightMode(
                 modoEscuro ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
 
-        switchTema.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.putBoolean("modoEscuro", isChecked);
+        // Alterna tema
+        switchTema.setOnCheckedChangeListener((CompoundButton b, boolean isChecked) -> {
+            modoEscuro = isChecked;
 
+            // Atualiza prefs_conta
+            String novosDados = email + ";" + nome + ";" + imagemBase64 + ";" + modoEscuro;
+            prefs.putString("prefs_conta", novosDados);
+
+            // Aplica tema
             AppCompatDelegate.setDefaultNightMode(
-                    isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+                    modoEscuro ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
             );
         });
 
-        // -------------------------------
-        //   Ação para selecionar imagem
-        // -------------------------------
+        // Selecionar imagem da galeria
         abrirGaleria = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
-                        Uri imagemSelecionada = result.getData().getData();
+                        Uri uri = result.getData().getData();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(
-                                    requireActivity().getContentResolver(), imagemSelecionada);
+                                    requireActivity().getContentResolver(), uri);
 
                             imgPerfil.setImageBitmap(bitmap);
 
-                            // Salvar em SharedPreferences
-                            if (dadosConta != null && dadosConta.contains(";")) {
-                                String[] partes = dadosConta.split(";");
+                            // Atualiza imagemBase64
+                            imagemBase64 = converterBitmapParaBase64(bitmap);
 
-                                String dadosAtualizados = partes[0]+";"+partes[1]+";"+converterBitmapParaBase64(bitmap)+";"+partes[3];
-                                prefs.putString("prefs_conta", dadosAtualizados);
+                            // Regrava prefs_conta
+                            String novosDados = email + ";" + nome + ";" + imagemBase64 + ";" + modoEscuro;
+                            prefs.putString("prefs_conta", novosDados);
 
-                                new SalvamentoDados().salvarDadosConta(requireContext());
-                            }
-
+                            // Usa sua classe de salvamento
+                            new SalvamentoDados().salvarDadosConta(requireContext());
 
                         } catch (IOException e) {
                             Toast.makeText(getContext(), "Erro ao carregar imagem", Toast.LENGTH_SHORT).show();
@@ -154,17 +151,15 @@ public class ContaFragment extends Fragment {
             abrirGaleria.launch(intent);
         });
 
-        // -------------------------------
-        //   Logout
-        // -------------------------------
+        // Função de logout
         logoutButton.setOnClickListener(v -> {
-            // Firebase logout
+            // Firebase
             mAuth.signOut();
 
             // Google logout
             mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
                 Toast.makeText(getContext(), "Logout bem sucedido!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
                 requireActivity().finish();
             });
         });
@@ -172,17 +167,15 @@ public class ContaFragment extends Fragment {
         return view;
     }
 
-    // -------------------------------
-    //   Conversores Base64
-    // -------------------------------
+    // Conversores Base64
     private String converterBitmapParaBase64(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
     }
 
-    private Bitmap converterBase64ParaBitmap(String imagemBase64) {
-        byte[] bytes = Base64.decode(imagemBase64, Base64.DEFAULT);
+    private Bitmap converterBase64ParaBitmap(String base64) {
+        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }

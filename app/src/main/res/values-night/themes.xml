@@ -1,6 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CódigoEmLibras" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
+
+    <!-- Tema escuro principal -->
+    <style name="Theme.CódigoEmLibras" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Cor de fundo principal -->
+        <item name="android:colorBackground">#050720</item>
+
+        <!-- Cor dos textos sobre superfícies secundárias -->
+        <item name="colorOnSurface">#CDDEFF</item>
     </style>
+
 </resources>

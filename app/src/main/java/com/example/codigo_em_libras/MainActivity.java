@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
@@ -60,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setItemTextColor(cores);
 
 
-        tituloAtual = "Missões";
-        replaceFragment(new MissoesFragment());
-        View iconMissions = bottomNav.findViewById(R.id.missions);
+        if (savedInstanceState == null) {
+            tituloAtual = "Missões";
+            replaceFragment(new MissoesFragment());
 
-        iconMissions.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
-        iconMissions.animate().scaleX(1.25f).scaleY(1.25f).setDuration(150).start();
+            View iconMissions = bottomNav.findViewById(R.id.missions);
+            iconMissions.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
+            iconMissions.animate().scaleX(1.25f).scaleY(1.25f).setDuration(150).start();
+        }
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             if (selectedIconView != null) {
                 selectedIconView.setBackground(getDrawable(R.drawable.bottom_nav_bar_customizada));
                 selectedIconView.animate().scaleX(1.25f).scaleY(1.25f).setDuration(150).start();
-             //   selectedIconView.animate().y(-10f).setDuration(150).start();
+                //   selectedIconView.animate().y(-10f).setDuration(150).start();
             }
 
             return true;

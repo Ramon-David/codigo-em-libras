@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DAE9FA"
+    android:background="?android:colorBackground"
     android:paddingStart="20dp"
     android:paddingTop="20dp"
     android:paddingEnd="20dp"
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nome do Usuário"
-                android:textColor="#1B2237"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="usuario@gmail.com"
-                android:textColor="#1B2237"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="30dp"
-            android:background="#CCCCCC"
+            android:background="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgPerfil" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Configurações"
-            android:textColor="#1B2237"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="🌞 Tema"
-            android:textColor="#1B2237"
-            android:textColorHint="#000000"
+            android:textColor="?attr/colorOnBackground"
+            android:textColorHint="?attr/colorOnBackground"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtConfiguracoes" />
@@ -104,23 +104,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTema" />
 
+        <!-- SEGUNDA LINHA DIVISORA -->
         <View
             android:id="@+id/divisor2"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="30dp"
-            android:background="#CCCCCC"
+            android:background="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/switchTema" />
 
+        <!-- OUTROS -->
         <TextView
             android:id="@+id/txtOutros"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Outros"
-            android:textColor="#1B2237"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,8 +135,8 @@
             android:layout_marginTop="25dp"
             android:contentDescription="Botão de sair"
             android:src="@drawable/logout_button"
+            android:tint="?attr/colorOnBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtOutros" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

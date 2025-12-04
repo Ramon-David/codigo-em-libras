@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -44,7 +46,8 @@ public class MateriaisActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         materiaisList = new ArrayList<>();
-        adapter = new MateriaisAdapter(materiaisList, this::abrirPDF);
+
+        adapter = new MateriaisAdapter(materiaisList, this::abrirMaterial);
         recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER); // Remove o efeito visual das bordas do RecyclerView
         recyclerView.setAdapter(adapter);
 
@@ -81,38 +84,79 @@ public class MateriaisActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Materiais")
-                .document(mundoSelecionado)
-                .collection("itens")
+        FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = usuarioAtual.getUid();
+
+        // Carregamos o progresso do jogador
+        db.collection("JogadorDados")
+                .document(userId)
+                .collection("Dados do Jogo")
+                .document("Progresso")
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    materiaisList.clear();
+                .addOnSuccessListener(progressoSnap -> {
+                    long faseAtual = progressoSnap.getLong("FaseAtual");
 
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            // Converte cada documento em um objeto Material
-                            Material material = doc.toObject(Material.class);
-                            materiaisList.add(material);
-                        }
-                        // Ordena os materiais pelo campo "ordem"
-                        Collections.sort(materiaisList, (m1, m2) -> Integer.compare(m1.getOrdem(), m2.getOrdem()));
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(this, "Nenhum material encontrado.", Toast.LENGTH_SHORT).show();
-                    }
+                    // Buscamos os materiais
+                    db.collection("Materiais")
+                            .document(mundoSelecionado)
+                            .collection("itens")
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                materiaisList.clear();
 
-                    progressBar.setVisibility(View.GONE);
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                                        Material material = doc.toObject(Material.class);
+
+                                        // Lógica de desbloqueio de fase
+                                        String faseStr = material.getFaseVinculada();
+                                        int numeroFaseMaterial = Integer.parseInt(faseStr.replace("fase", "")); // 4
+
+                                        boolean desbloquear = faseAtual >= numeroFaseMaterial;
+
+                                        material.setDesbloqueado(desbloquear);
+                                        // -------------------------------------------
+
+                                        materiaisList.add(material);
+                                    }
+
+                                    Collections.sort(materiaisList, (m1, m2) ->
+                                            Integer.compare(m1.getOrdem(), m2.getOrdem()));
+
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(this, "Nenhum material encontrado.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                progressBar.setVisibility(View.GONE);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "Erro ao carregar materiais.", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            });
+
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro ao carregar materiais.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Erro ao carregar progresso do jogador!", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 });
     }
 
-    private void abrirPDF(Material material) {
+
+    private void abrirMaterial(Material material) {
+
+        // BLOQUEIO: material vinculado a uma fase que o usuário não completou
+        if (!material.isDesbloqueado()) {
+            Toast.makeText(this,
+                    "Material bloqueado. Complete a " + material.getFaseVinculada() + ".",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // ABRIR PDF
         if (material.getUrl() != null && !material.getUrl().isEmpty()) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(material.getUrl()));
-            startActivity(intent);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(material.getUrl())));
         } else {
             Toast.makeText(this, "URL do PDF não encontrada.", Toast.LENGTH_SHORT).show();
         }
