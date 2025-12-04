@@ -57,18 +57,10 @@ public class MateriaisActivity extends AppCompatActivity {
         // Define o título conforme o mundo recebido
         if (mundoSelecionado != null) {
             switch (mundoSelecionado) {
-                case "mundo1":
-                    tituloToolBar.setText("Mundo 1");
-                    break;
-                case "mundo2":
-                    tituloToolBar.setText("Mundo 2");
-                    break;
-                case "mundo3":
-                    tituloToolBar.setText("Mundo 3");
-                    break;
-                default:
-                    tituloToolBar.setText("Materiais");
-                    break;
+                case "mundo1": tituloToolBar.setText("Mundo 1"); break;
+                case "mundo2": tituloToolBar.setText("Mundo 2"); break;
+                case "mundo3": tituloToolBar.setText("Mundo 3"); break;
+                default: tituloToolBar.setText("Materiais");
             }
         } else {
             tituloToolBar.setText("Materiais");
@@ -94,9 +86,13 @@ public class MateriaisActivity extends AppCompatActivity {
                 .document("Progresso")
                 .get()
                 .addOnSuccessListener(progressoSnap -> {
-                    long faseAtual = progressoSnap.getLong("FaseAtual");
 
-                    // Buscamos os materiais
+                    Long faseAtualValor = progressoSnap.getLong("FaseAtual");
+                    Long mundoAtualValor = progressoSnap.getLong("MundoAtual");
+
+                    long faseAtual = (faseAtualValor != null) ? faseAtualValor : 0;
+                    long mundoAtual = (mundoAtualValor != null) ? mundoAtualValor : 1;
+
                     db.collection("Materiais")
                             .document(mundoSelecionado)
                             .collection("itens")
@@ -111,12 +107,24 @@ public class MateriaisActivity extends AppCompatActivity {
 
                                         // Lógica de desbloqueio de fase
                                         String faseStr = material.getFaseVinculada();
-                                        int numeroFaseMaterial = Integer.parseInt(faseStr.replace("fase", "")); // 4
+                                        int numeroFaseMaterial = Integer.parseInt(faseStr.replace("fase", ""));
 
-                                        boolean desbloquear = faseAtual >= numeroFaseMaterial;
+                                        boolean desbloquear;
+
+                                        // DESBLOQUEIA SOMENTE SE O MUNDO DO MATERIAL == O MUNDO ATUAL DO JOGADOR
+                                        if (
+                                                (mundoSelecionado.equals("mundo1") && mundoAtual == 1) ||
+                                                        (mundoSelecionado.equals("mundo2") && mundoAtual == 2) ||
+                                                        (mundoSelecionado.equals("mundo3") && mundoAtual == 3)
+                                        ) {
+                                            // desbloqueio normal
+                                            desbloquear = faseAtual >= numeroFaseMaterial;
+                                        } else {
+                                            // impede desbloquear mundos futuros
+                                            desbloquear = false;
+                                        }
 
                                         material.setDesbloqueado(desbloquear);
-                                        // -------------------------------------------
 
                                         materiaisList.add(material);
                                     }
@@ -138,11 +146,10 @@ public class MateriaisActivity extends AppCompatActivity {
 
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro ao carregar progresso do jogador!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Erro ao carregar progresso!", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 });
     }
-
 
     private void abrirMaterial(Material material) {
 
